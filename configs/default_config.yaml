@@ -1,0 +1,16 @@
+perform_battle_tests: True
+logging:
+  entity: mode-connect # change it to your wandb entity
+  project: star-domain # change it to your wandb project
+  tags: []
+  gdrive_storage_folder: null
+  use_wandb: True
+  wandb:
+    entity: mode-connect # change it to your wandb entity
+    project: star-domain # change it to your wandb project
+    tags: []
+    netrc_path: "~/.netrc"
+  use_tb: False
+use_hardcoded_config: False
+training:
+  label_smoothing: 0.0

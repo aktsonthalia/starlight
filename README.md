@@ -36,6 +36,11 @@ Currently, the experiments can only be performed on a slurm cluster.
 2. Copy the [template](https://docs.google.com/spreadsheets/d/1yUZd8F9TncKoWxkTS_WtCtXiPOEwnjCssiJyOU2I9gc/edit#gid=727279666).
 3. Share the copied GSheet with your newly created service account.
 
+### Settings
+
+1. Open `configs/default_config.yaml` and make the necessary changes. 
+2. Open the GSheet with additional configurations and make the necessary changes there, too.
+
 ### Running Experiments
 
 The experiments use slurm `sbatch` jobs. In order to run them conveniently using the GSheets tool, you need to use 
