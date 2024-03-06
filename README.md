@@ -4,7 +4,7 @@ TODO: insert arxiv link
 
 ## Instructions
 
-Currently, the experiments can only be performed on a slurm cluster. 
+You will need to use a Slurm-based computing cluster to run the experiments.
 
 ### Source code
 
@@ -14,7 +14,6 @@ Currently, the experiments can only be performed on a slurm cluster.
     $ git clone https://github.com/aktsonthalia/starlight
     ```
 1. Add `STAI-tuned` as a submodule:
-
     ```
     $ git submodule add https://github.com/aktsonthalia/STAI-tuned
     ```
@@ -28,13 +27,15 @@ Currently, the experiments can only be performed on a slurm cluster.
 
 ### WandB
 
-1. Set up your [WandB](https://wandb.ai) account. Note down the `entity` and `project` values for use in the experiments.
+1. Set up your [WandB](https://wandb.ai) account. Note down the `entity` and `project` values for use in the experiments. 
 
 ### GSheets
 
-1. Create a [Google Service Account](https://support.google.com/a/answer/7378726?hl=en). Store its credentials in `~/config/gauth/credentials.json` on your slurm account.
-2. Copy the [template](https://docs.google.com/spreadsheets/d/1yUZd8F9TncKoWxkTS_WtCtXiPOEwnjCssiJyOU2I9gc/edit#gid=727279666).
-3. Share the copied GSheet with your newly created service account.
+We use Google Sheets to configure the experiments, and store results in a handy format.
+
+1. Create a [Google Service Account](https://support.google.com/a/answer/7378726?hl=en). Store its credentials in `~/config/gauth/credentials.json` on your slurm account. Note that `~` refers to the value stored in your `$HOME` variable. Service accounts are an elegant way of accessing Google content remotely without manual authentication.
+2. Copy the [template](https://docs.google.com/spreadsheets/d/1yUZd8F9TncKoWxkTS_WtCtXiPOEwnjCssiJyOU2I9gc/edit#gid=727279666) to your own Google account so that you can make changes to it.
+3. Share the copied GSheet with your newly created service account, so that you can access the GSheet remotely.
 
 ### Settings
 
@@ -43,14 +44,17 @@ Currently, the experiments can only be performed on a slurm cluster.
    1. Set `slurm:output`, `slurm:time`, `slurm:partition` and `slurm:error` to reflect the settings that you would use in a slurm job.
    2. Set `delta:exp_type` to either `train_anchor` for regular models and `train_star` for star models.
    3. Set `whether_to_run` to 1 for the rows / experiments that you wish to run. 
+   4. Set `delta:eval.held_out_anchors` and `delta:model.anchor_model_wandb_ids` to lists of WandB run IDs, after you have generated the requisite runs.
 
 ### Running Experiments
 
 The experiments use slurm `sbatch` jobs. In order to run them conveniently using the GSheets tool, you need to use 
 
 ```
-python STAI-tuned/src/stuned/run_from_csv/__main__.py --conda_env <PATH_TO_CONDA_ENV> --csv_path <LINK_TO_GSHEET>::<NAME_OF_WORKSHEET> 
+$ conda activate <PATH_TO_CONDA_ENV> && python STAI-tuned/src/stuned/run_from_csv/__main__.py --conda_env <PATH_TO_CONDA_ENV> --csv_path <LINK_TO_GSHEET>::<NAME_OF_WORKSHEET> 
 ```
+
+This script downloads the GSheet, submits a separate `sbatch` job for each row, and updates the GSheet with the WandB URL to the experiment run. 
 
 ## Acknowledgements
 

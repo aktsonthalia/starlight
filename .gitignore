@@ -1,2 +1,5 @@
 # pycache files
 __pycache__/
+
+# output files
+slurm/*
