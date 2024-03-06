@@ -13,9 +13,10 @@ You will need to use a Slurm-based computing cluster to run the experiments.
     ```
     $ git clone https://github.com/aktsonthalia/starlight
     ```
-1. Add `STAI-tuned` as a submodule:
+1. Add submodules:
     ```
-    $ git submodule add https://github.com/aktsonthalia/STAI-tuned
+    $ git submodule update --init
+    $ git submodule update --recursive --remote
     ```
 1. Create a new conda environment and install the requirements:
 
