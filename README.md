@@ -39,7 +39,10 @@ Currently, the experiments can only be performed on a slurm cluster.
 ### Settings
 
 1. Open `configs/default_config.yaml` and make the necessary changes. 
-2. Open the GSheet with additional configurations and make the necessary changes there, too.
+2. Open the GSheet with additional configurations and make the necessary changes there, too. Each row represents one experiment and correspondingly one `sbatch` job.
+   1. Set `slurm:output`, `slurm:time`, `slurm:partition` and `slurm:error` to reflect the settings that you would use in a slurm job.
+   2. Set `delta:exp_type` to either `train_anchor` for regular models and `train_star` for star models.
+   3. Set `whether_to_run` to 1 for the rows / experiments that you wish to run. 
 
 ### Running Experiments
 
