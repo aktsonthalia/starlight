@@ -57,6 +57,14 @@ $ conda activate <PATH_TO_CONDA_ENV> && python STAI-tuned/src/stuned/run_from_cs
 
 This script downloads the GSheet, submits a separate `sbatch` job for each row, and updates the GSheet with the WandB URL to the experiment run. 
 
+### Plotting results
+
+You can use the scripts in `postprocessing/`. Please first put the relevant WandB links inside `results/wandb_links` first (follow the example yaml file).
+
+```
+$ python make_star_model_hypothesis_plots.py -c cifar10_resnet18
+```
+
 ## Acknowledgements
 
 1. Thanks to my colleague, [Alexander Rubinstein](https://github.com/alexanderRubinstein/) for the [STAI-tuned tool](https://github.com/AlexanderRubinstein/STAI-tuned) that made running the experiments so much easier.
