@@ -55,3 +55,4 @@ python STAI-tuned/src/stuned/run_from_csv/__main__.py --conda_env <PATH_TO_CONDA
 1. Thanks to the following open-source repositories, code from which was used in this one.
    1. [ResNet](https://github.com/kuangliu/pytorch-cifar/blob/master/models/resnet.py)
    2. [DenseNet](https://github.com/andreasveit/densenet-pytorch/blob/master/densenet.py)
+   3. [rebasin](https://pypi.org/project/rebasin/)
