@@ -43,6 +43,8 @@ TODO: insert arxiv link
 6. You will find config files in `configs/`. Open the configuration file for the experiment you wish to run.
 7. Change the wandb `entity` and `project` values.
 8. Make any changes that might be needed in your case.
+9. Go to `dataloaders/constants.py` and change any dataset paths that you might need to.
+10. `main.py` uses a `SCRATCH` environment variable. Set it to a suitable folder using `export SCRATCH=<DIR>`.
 
 ### Running experiments
 
@@ -52,15 +54,7 @@ TODO: insert arxiv link
    $ python main.py <PATH_TO_CONFIG_FILE>
    ```
 
-### Plotting results
-
-You can use the scripts in `postprocessing/`. Please first put the relevant WandB links inside `results/wandb_links` (follow the example yaml file).
-
-```
-$ python make_star_model_hypothesis_plots.py -c cifar10_resnet18
-```
-
-
+### Plotting TODO
 
 ## Acknowledgements
 

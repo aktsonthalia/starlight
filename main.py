@@ -173,7 +173,10 @@ def training_experiment(config, logger):
     csv_results.append(["test_accuracy", f"{test_accuracy:.5f}"])
     csv_results.append(["test_loss", f"{test_loss:.3f}"])
 
-    try_to_log_in_csv_in_batch(logger, csv_results)
+    try:
+        try_to_log_in_csv_in_batch(logger, csv_results)
+    except:
+        pass
 
     # also interpolate against held-out models
     if config.exp_type == "train_star" and not config.skip_computing_barriers:
@@ -214,12 +217,15 @@ def training_experiment(config, logger):
             loss_barriers.append(loss_barrier)
             acc_barriers.append(acc_barrier)
 
-        try_to_log_in_csv_in_batch(logger,
-            [
-                ["avg_barrier_acc_training", mean(acc_barriers)],
-                ["avg_barrier_loss_training", mean(loss_barriers)],
-            ]
-        )
+        try: 
+            try_to_log_in_csv_in_batch(logger,
+                [
+                    ["avg_barrier_acc_training", mean(acc_barriers)],
+                    ["avg_barrier_loss_training", mean(loss_barriers)],
+                ]
+            )
+        except:
+            pass
 
         wandb_run.log({
             "avg_barrier_acc_training": mean(acc_barriers),
@@ -255,12 +261,16 @@ def training_experiment(config, logger):
             loss_barriers.append(loss_barrier)
             acc_barriers.append(acc_barrier)
 
-        try_to_log_in_csv_in_batch(logger, 
-            [
-                ["avg_barrier_acc_held_out", f"{mean(acc_barriers):.5f}"],
-                ["avg_barrier_loss_held_out", f"{mean(loss_barriers):.3f}"],
-            ]
-        )
+        try:
+            try_to_log_in_csv_in_batch(logger, 
+                [
+                    ["avg_barrier_acc_held_out", f"{mean(acc_barriers):.5f}"],
+                    ["avg_barrier_loss_held_out", f"{mean(loss_barriers):.3f}"],
+                ]
+            )
+        except:
+            pass
+
         wandb_run.log({
             "avg_barrier_acc_held_out": mean(acc_barriers),
             "all_barriers_acc_held_out": acc_barriers,
@@ -271,7 +281,11 @@ def training_experiment(config, logger):
     # calculate calibration error
     calibration_error = compute_calibration_error(model=model, dl=test_dl, num_classes=config.model.settings.num_classes)
     wandb_run.log({"calibration_error": calibration_error})
-    try_to_log_in_csv_in_batch(logger, [["calibration_error", f"{calibration_error:.5f}"]])
+
+    try:
+        try_to_log_in_csv_in_batch(logger, [["calibration_error", f"{calibration_error:.5f}"]])
+    except:
+        pass
 
 
 def generic_experiment(config, logger, processes_to_kill_before_exiting):
