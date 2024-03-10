@@ -4,7 +4,7 @@ TODO: insert arxiv link
 
 ## Instructions
 
-### Source code
+### Source code :computer:
 
 1. Clone this repository:
 
@@ -59,7 +59,7 @@ TODO: insert arxiv link
 
 ## Acknowledgements
 
-1. Thanks to my colleague, [Alexander Rubinstein](https://github.com/alexanderRubinstein/) for the [STAI-tuned tool](https://github.com/AlexanderRubinstein/STAI-tuned) that made running the experiments so much easier.
+1. Thanks to my colleague, [Alexander Rubinstein](https://github.com/alexanderRubinstein/) for the [STAI-tuned tool](https://github.com/AlexanderRubinstein/STAI-tuned) that made running the experiments so much easier. If you're interested, you can run more extensive experiments using this tool, too. Follow [this README](README_stuned.md)
 
 1. Thanks to the [ML Cloud at Universität Tübingen](https://portal.mlcloud.uni-tuebingen.de/) for providing and maintaining the compute resources that made the experiments possible.
 
@@ -69,3 +69,5 @@ TODO: insert arxiv link
    1. [ResNet](https://github.com/kuangliu/pytorch-cifar/blob/master/models/resnet.py)
    2. [DenseNet](https://github.com/andreasveit/densenet-pytorch/blob/master/densenet.py)
    3. [rebasin](https://pypi.org/project/rebasin/)
+
+
