@@ -24,7 +24,7 @@ from utils import (
     has_batch_norm,
     make_exps_deterministic,
     make_interpolation_plot,
-    load_model_from_wandb_id,
+    load_models,
     match_weights,
     setup_model,
     setup_optimizer,
@@ -230,19 +230,12 @@ def training_experiment(config, logger):
         })
         
     # barriers with held-out anchors
-    if config.eval.held_out_anchors and not config.skip_computing_barriers:
+    if (config.eval.held_out_anchors or config.eval.held_out_model_paths) and not config.skip_computing_barriers:
         loss_barriers = []
         acc_barriers = []
-        for anchor_model_wandb_id in config.eval.held_out_anchors:
-            anchor_model = setup_model(config)
-            anchor_model.load_state_dict(
-                load_model_from_wandb_id(
-                    config.logging.entity,
-                    config.logging.project,
-                    anchor_model_wandb_id,
-                )
-            )
-            anchor_model.eval()
+        held_out_anchors = load_models(config, model, "held_out")
+
+        for i, anchor_model in enumerate(held_out_anchors):
             if config.model.permute_anchors:
                 anchor_model = match_weights(
                     model1=model, 
@@ -256,7 +249,7 @@ def training_experiment(config, logger):
                 dl=test_dl,
                 num_points=config.interpolation.num_points,
                 logger=logger,
-                plot_title=f"interp_with_held_out-{anchor_model_wandb_id}",
+                plot_title=f"interp_with_held_out-{i}",
                 loss_fn=loss_fn_eval,
                 train_dl=train_dl
             )

@@ -1,4 +1,5 @@
 import copy
+import dropbox
 import numpy as np
 import os
 import random
@@ -133,8 +134,9 @@ def setup_model(config):
         if all([key.startswith("module.") for key in state_dict.keys()]):
             state_dict = {key[7:]: value for key, value in state_dict.items()}
         
-    model.load_state_dict(state_dict)
-    model.cuda()
+        model.load_state_dict(state_dict)
+        model.cuda()
+
     if config.training.parallel:
         model = torch.nn.DataParallel(
             model, device_ids=list(range(torch.cuda.device_count()))
@@ -263,33 +265,90 @@ def match_weights(model1, model2, train_dl, recalculate_batch_statistics=False):
             x, y = batch
             x = x.cuda()
             _ = model2(x)
+            del x, _
 
     return model2
+
+class DropboxSync:
+    def __init__(self, access_token):
+        self.dbx = dropbox.Dropbox(access_token)
+
+    def upload_file(self, local_path, dropbox_path):
+        with open(local_path, 'rb') as f:
+            self.dbx.files_upload(f.read(), dropbox_path, mode=dropbox.files.WriteMode.overwrite)
+
+    def upload_folder(self, local_folder, dropbox_folder):
+        for root, dirs, files in os.walk(local_folder):
+            for filename in files:
+                local_path = os.path.join(root, filename)
+                relative_path = os.path.relpath(local_path, local_folder)
+                dropbox_path = os.path.join(dropbox_folder, relative_path).replace(os.path.sep, '/')
+                print(f'Uploading {local_path} to {dropbox_path}')
+                self.upload_file(local_path, dropbox_path)
+
+def load_models(config, base_model, mode="anchors"):
+
+    models = []
+    wandb_ids = None
+    file_paths = None
+
+    if mode == "anchors":
+        try:
+            wandb_ids = config.model.anchor_model_wandb_ids
+            assert len(wandb_ids) > 0
+        except:
+            wandb_ids = None
+            print(f"Loading anchor models from file paths... {config.model.anchor_model_paths}")
+            with open(config.model.anchor_model_paths, "r") as f:
+                file_paths = f.readlines()
+        
+    if mode == "held_out":
+        try:
+            wandb_ids = config.eval.held_out_anchors
+            assert len(wandb_ids) > 0
+        except:
+            wandb_ids = None
+            with open(config.model.held_out_model_paths, "r") as f:
+                file_paths = f.readlines()
+    
+    assert wandb_ids is not None or file_paths is not None, "wandb_ids and file_paths cannot both be None"
+
+    if wandb_ids is not None:
+        for wandb_id in wandb_ids:
+            state_dict = load_model_from_wandb_id(
+                config.logging.entity, 
+                config.logging.project, 
+                wandb_id
+            )
+            model = copy.deepcopy(base_model).cuda().eval()
+            model.load_state_dict(state_dict)
+            models.append(model)
+
+    elif file_paths is not None:
+        for file_path in file_paths:
+            print(f"Loading model from file path: {file_path}")
+            file_path = file_path.strip()
+            state_dict = torch.load(file_path)['state_dict']
+            # remove module
+            if all([key.startswith("module.") for key in state_dict.keys()]):
+                state_dict = {key[7:]: value for key, value in state_dict.items()}
+            model = copy.deepcopy(base_model).cuda().eval()
+            model.load_state_dict(state_dict)
+            models.append(model)
+
+    assert len(models) > 0, f"No models were loaded; wandb_ids={wandb_ids}, file_paths={file_paths}"
+    return models
 
 class StarDomain:
     def __init__(self, star_model, config, train_dl):
 
+        self.star_model = star_model
         self.loss_sign = 1
         if config.exp_type in ["train_anti_star"]:
             self.loss_sign = -1
         self.train_dl = train_dl
-        anchor_model_wandb_ids = config.model.anchor_model_wandb_ids
-        self.star_model = star_model
         # load anchors
-        self.anchor_models = []
-        for wandb_id in anchor_model_wandb_ids:
-            anchor_model = copy.deepcopy(star_model)
-            anchor_model.load_state_dict(
-                load_model_from_wandb_id(
-                    config.logging.entity,
-                    config.logging.project,
-                    wandb_id,
-                )
-            )
-            if not config.mem_saving_mode:
-                anchor_model.cuda()
-            anchor_model.eval()
-            self.anchor_models.append(anchor_model)
+        self.anchor_models = load_models(config, star_model, mode="anchors")
         self.interpolated_model = copy.deepcopy(star_model).cuda()
         self.perform_battle_tests = config.perform_battle_tests
 

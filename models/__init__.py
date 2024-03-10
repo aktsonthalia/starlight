@@ -11,6 +11,7 @@ sys.path.append("..")
 models_dict = {
     "resnet18_cifar": resnet18_cifar,
     "resnet18_torch": torchvision.models.resnet18,
+    "resnet50_torch": torchvision.models.resnet50,
     "densenet_cifar": densenet_cifar
 }
 
