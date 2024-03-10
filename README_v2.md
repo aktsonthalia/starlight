@@ -12,7 +12,7 @@ TODO: insert arxiv link
     $ git clone https://github.com/aktsonthalia/starlight
     ```
 
-1. Create a new conda environment and install the requirements:
+2. Create a new conda environment and install the requirements:
 
     ```
     $ conda create -n starlight python=3.9
@@ -22,41 +22,35 @@ TODO: insert arxiv link
 
 ### WandB
 
-1. Set up your [WandB](https://wandb.ai) account. Note down the `entity` and `project` values for use in the experiments. 
+3. Set up your [WandB](https://wandb.ai) account. Note down the `entity` and `project` values for use in the experiments. 
 
 
 ### Pretrained models
 
-You can download pretrained models as zip files. Once they have been downloaded, extract them.
+4. You can download pretrained models as zip files. Once they have been downloaded, extract them.
 
-1. [CIFAR10-ResNet18](https://drive.google.com/file/d/1g-TxEGbORtHmxVEefoJtk2yxSf_mHL28/view?usp=drive_link)
+- [CIFAR10-ResNet18](https://drive.google.com/file/d/1g-TxEGbORtHmxVEefoJtk2yxSf_mHL28/view?usp=drive_link)
 
-### Configurations
-
-1. You will find config files in `configs/`. Open the configuration file for the experiment you wish to run.
-2. Change the wandb `entity` and `project` values.
-3. Run the script `model_paths/create_model_paths.py`:
+5. Run the script `model_paths/create_model_paths.py`:
    ```
    $ cd model_paths/
    $ python create_model_paths.py -f <PATH_TO_EXTRACTED_MODELS>
    $ cd ..
    ```
-   
-4. Run the training script:
+
+### Configurations
+
+6. You will find config files in `configs/`. Open the configuration file for the experiment you wish to run.
+7. Change the wandb `entity` and `project` values.
+8. Make any changes that might be needed in your case.
+
+### Running experiments
+
+9.  Run the training script:
    
    ```
    $ python main.py <PATH_TO_CONFIG_FILE>
    ```
-
-### Running Experiments
-
-The experiments use slurm `sbatch` jobs. In order to run them conveniently using the GSheets tool, you need to use 
-
-```
-$ conda activate <PATH_TO_CONDA_ENV> && export PROJECT_ROOT_PROVIDED_FOR_STUNED=$(pwd) && python STAI-tuned/src/stuned/run_from_csv/__main__.py --conda_env <PATH_TO_CONDA_ENV> --csv_path <LINK_TO_GSHEET>::<NAME_OF_WORKSHEET> 
-```
-
-This script downloads the GSheet, submits a separate `sbatch` job for each row, and updates the GSheet with the WandB URL to the experiment run. 
 
 ### Plotting results
 
