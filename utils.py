@@ -308,7 +308,7 @@ def load_models(config, base_model, mode="anchors"):
             assert len(wandb_ids) > 0
         except:
             wandb_ids = None
-            with open(config.model.held_out_model_paths, "r") as f:
+            with open(config.eval.held_out_model_paths, "r") as f:
                 file_paths = f.readlines()
     
     assert wandb_ids is not None or file_paths is not None, "wandb_ids and file_paths cannot both be None"
