@@ -4,8 +4,6 @@ TODO: insert arxiv link
 
 ## Instructions
 
-You will need to use a Slurm-based computing cluster to run the experiments.
-
 ### Source code
 
 1. Clone this repository:
@@ -13,12 +11,8 @@ You will need to use a Slurm-based computing cluster to run the experiments.
     ```
     $ git clone https://github.com/aktsonthalia/starlight
     ```
-1. Add submodules:
-    ```
-    $ git submodule update --init
-    $ git submodule update --recursive --remote
-    ```
-1. Create a new conda environment and install the requirements:
+
+2. Create a new conda environment and install the requirements:
 
     ```
     $ conda create -n starlight python=3.9
@@ -28,35 +22,35 @@ You will need to use a Slurm-based computing cluster to run the experiments.
 
 ### WandB
 
-1. Set up your [WandB](https://wandb.ai) account. Note down the `entity` and `project` values for use in the experiments. 
+3. Set up your [WandB](https://wandb.ai) account. Note down the `entity` and `project` values for use in the experiments. 
 
-### GSheets
 
-We use Google Sheets to configure the experiments, and store results in a handy format.
+### Pretrained models
 
-1. Create a [Google Service Account](https://support.google.com/a/answer/7378726?hl=en). Store its credentials in `~/config/gauth/credentials.json` on your slurm account. Note that `~` refers to the value stored in your `$HOME` variable. Service accounts are an elegant way of accessing Google content remotely without manual authentication.
-2. Copy the [template](https://docs.google.com/spreadsheets/d/1yUZd8F9TncKoWxkTS_WtCtXiPOEwnjCssiJyOU2I9gc/edit#gid=727279666) to your own Google account so that you can make changes to it.
-3. Share the copied GSheet with your newly created service account, so that you can access the GSheet remotely.
+4. You can download pretrained models as zip files. Once they have been downloaded, extract them.
 
-### Settings
+- [CIFAR10-ResNet18](https://drive.google.com/file/d/1g-TxEGbORtHmxVEefoJtk2yxSf_mHL28/view?usp=drive_link)
 
-1. Open `configs/default_config.yaml` and make the necessary changes: usually, you only need to change `entity` and `project` values to match your W&B setup. 
-2. Open the GSheet with additional configurations and make the necessary changes there, too. Each row represents one experiment and correspondingly one `sbatch` job.
-   1. Set `slurm:output`, `slurm:time`, `slurm:partition` and `slurm:error` to reflect the settings that you would use in a slurm job.
-   2. Set `delta:exp_type` to either `train_anchor` for regular models and `train_star` for star models.
-   3. Set `whether_to_run` to 1 for the rows / experiments that you wish to run. 
-   4. Set `delta:eval.held_out_anchors` and `delta:model.anchor_model_wandb_ids` to lists of WandB run IDs, after you have generated the requisite runs.
-   5. Modify any other values as required (the default settings would be good enough for reproducing the results from the paper).
+5. Run the script `model_paths/create_model_paths.py`:
+   ```
+   $ cd model_paths/
+   $ python create_model_paths.py -f <PATH_TO_EXTRACTED_MODELS>
+   $ cd ..
+   ```
 
-### Running Experiments
+### Configurations
 
-The experiments use slurm `sbatch` jobs. In order to run them conveniently using the GSheets tool, you need to use 
+6. You will find config files in `configs/`. Open the configuration file for the experiment you wish to run.
+7. Change the wandb `entity` and `project` values.
+8. Make any changes that might be needed in your case.
 
-```
-$ conda activate <PATH_TO_CONDA_ENV> && export PROJECT_ROOT_PROVIDED_FOR_STUNED=$(pwd) && python STAI-tuned/src/stuned/run_from_csv/__main__.py --conda_env <PATH_TO_CONDA_ENV> --csv_path <LINK_TO_GSHEET>::<NAME_OF_WORKSHEET> 
-```
+### Running experiments
 
-This script downloads the GSheet, submits a separate `sbatch` job for each row, and updates the GSheet with the WandB URL to the experiment run. 
+9.  Run the training script:
+   
+   ```
+   $ python main.py <PATH_TO_CONFIG_FILE>
+   ```
 
 ### Plotting results
 
@@ -66,11 +60,7 @@ You can use the scripts in `postprocessing/`. Please first put the relevant Wand
 $ python make_star_model_hypothesis_plots.py -c cifar10_resnet18
 ```
 
-### Pretrained models
 
-You can download pretrained models as zip files. 
-
-1. [CIFAR10-ResNet18](https://drive.google.com/file/d/1g-TxEGbORtHmxVEefoJtk2yxSf_mHL28/view?usp=drive_link)
 
 ## Acknowledgements
 
