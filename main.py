@@ -8,13 +8,12 @@ import yaml
 from dotmap import DotMap
 from statistics import mean 
 
-sys.path.append("STAI-tuned/src")
-from stuned.utility.helpers_for_main import prepare_wrapper_for_experiment
-from stuned.utility.logger import (
-    try_to_log_in_wandb,
-    try_to_log_in_csv,
-    try_to_log_in_csv_in_batch
-)
+try:
+    sys.path.append("STAI-tuned/src")
+    from stuned.utility.helpers_for_main import prepare_wrapper_for_experiment
+    from stuned.utility.logger import try_to_log_in_csv_in_batch
+except:
+    pass 
 
 from dataloaders import datasets_dict
 from utils import (
