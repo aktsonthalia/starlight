@@ -40,10 +40,11 @@ TODO: insert arxiv link
 
 ### Configurations
 
-6. You will find config files in `configs/`. Open the configuration file for the experiment you wish to run.
+6. You will find config files in `configs/`. Open the configuration file for the experiment you wish to run (names are self-explanatory).
+   - `cifar10_resnet18_star.yaml`
 7. Change the wandb `entity` and `project` values.
 8. Make any changes that might be needed in your case.
-9. Go to `dataloaders/constants.py` and change any dataset paths that you might need to.
+9.  Go to `dataloaders/constants.py` and change any dataset paths that you might need to.
 10. `main.py` uses a `SCRATCH` environment variable. Set it to a suitable folder using `export SCRATCH=<DIR>`.
 
 ### Running experiments
