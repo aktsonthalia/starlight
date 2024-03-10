@@ -2,7 +2,7 @@ import numpy as np
 import os 
 
 DATASETS_PATH = os.path.join(os.environ["WORK"], "datasets")
-
+DATASET_SPLIT_SEED = 42
 # to avoid mistakes during evaluation, we always use a fixed batch size which is a divisor of the number of samples
 # just an extra precaution
 VAL_BATCH_SIZE = 100
