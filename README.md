@@ -40,30 +40,37 @@ We use Google Sheets to configure the experiments, and store results in a handy 
 
 ### Settings
 
-1. Open `configs/default_config.yaml` and make the necessary changes. 
+1. Open `configs/default_config.yaml` and make the necessary changes: usually, you only need to change `entity` and `project` values to match your W&B setup. 
 2. Open the GSheet with additional configurations and make the necessary changes there, too. Each row represents one experiment and correspondingly one `sbatch` job.
    1. Set `slurm:output`, `slurm:time`, `slurm:partition` and `slurm:error` to reflect the settings that you would use in a slurm job.
    2. Set `delta:exp_type` to either `train_anchor` for regular models and `train_star` for star models.
    3. Set `whether_to_run` to 1 for the rows / experiments that you wish to run. 
    4. Set `delta:eval.held_out_anchors` and `delta:model.anchor_model_wandb_ids` to lists of WandB run IDs, after you have generated the requisite runs.
+   5. Modify any other values as required (the default settings would be good enough for reproducing the results from the paper).
 
 ### Running Experiments
 
 The experiments use slurm `sbatch` jobs. In order to run them conveniently using the GSheets tool, you need to use 
 
 ```
-$ conda activate <PATH_TO_CONDA_ENV> && python STAI-tuned/src/stuned/run_from_csv/__main__.py --conda_env <PATH_TO_CONDA_ENV> --csv_path <LINK_TO_GSHEET>::<NAME_OF_WORKSHEET> 
+$ conda activate <PATH_TO_CONDA_ENV> && export PROJECT_ROOT_PROVIDED_FOR_STUNED=$(pwd) && python STAI-tuned/src/stuned/run_from_csv/__main__.py --conda_env <PATH_TO_CONDA_ENV> --csv_path <LINK_TO_GSHEET>::<NAME_OF_WORKSHEET> 
 ```
 
 This script downloads the GSheet, submits a separate `sbatch` job for each row, and updates the GSheet with the WandB URL to the experiment run. 
 
 ### Plotting results
 
-You can use the scripts in `postprocessing/`. Please first put the relevant WandB links inside `results/wandb_links` first (follow the example yaml file).
+You can use the scripts in `postprocessing/`. Please first put the relevant WandB links inside `results/wandb_links` (follow the example yaml file).
 
 ```
 $ python make_star_model_hypothesis_plots.py -c cifar10_resnet18
 ```
+
+### Pretrained models
+
+You can download pretrained models as zip files. 
+
+1. [CIFAR10-ResNet18](https://drive.google.com/file/d/1g-TxEGbORtHmxVEefoJtk2yxSf_mHL28/view?usp=drive_link)
 
 ## Acknowledgements
 
