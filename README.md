@@ -64,7 +64,7 @@ $ python plot_barriers.py -c <CONFIG_FILE from configs/> -a <PATH_TO_MODEL_A_CHE
 
 ## Acknowledgements :clap:
 
-1. Thanks to my collaborator, [Alexander Rubinstein](https://github.com/alexanderRubinstein/) for the [STAI-tuned tool](https://github.com/AlexanderRubinstein/STAI-tuned) that made running the experiments so much easier. If you're interested, you can run more extensive experiments using this tool, too. Follow [this README](README_stuned.md)
+1. Thanks to my collaborator, [Alexander Rubinstein](https://github.com/alexanderRubinstein/) for the [STAI-tuned tool](https://github.com/AlexanderRubinstein/STAI-tuned) that made running the experiments so much easier. If you're interested, you can run more extensive experiments using this tool, too. Follow [this README](README_stuned.md).
    
 2. Thanks to [Arnas Uselis](https://github.com/oshapio/) for testing the code prior to release.
 
@@ -73,8 +73,8 @@ $ python plot_barriers.py -c <CONFIG_FILE from configs/> -a <PATH_TO_MODEL_A_CHE
 4. Thanks to [WandB](https://wandb.ai) for their [academic researchers plan](https://wandb.ai/site/research).
 
 5. Thanks to the following open-source repositories, code from which was used in this one.
-   1. [ResNet](https://github.com/kuangliu/pytorch-cifar/blob/master/models/resnet.py)
-   2. [DenseNet](https://github.com/andreasveit/densenet-pytorch/blob/master/densenet.py)
-   3. [rebasin](https://pypi.org/project/rebasin/)
+   1. [ResNet](https://github.com/kuangliu/pytorch-cifar/blob/master/models/resnet.py).
+   2. [DenseNet](https://github.com/andreasveit/densenet-pytorch/blob/master/densenet.py).
+   3. [rebasin](https://pypi.org/project/rebasin/).
 
 --
