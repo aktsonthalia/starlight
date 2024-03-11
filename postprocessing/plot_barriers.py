@@ -4,6 +4,7 @@ sys.path.append(PROJECT_PATH)
 
 import argparse
 import yaml
+import os
 import torch
 import wandb 
 from dotmap import DotMap
@@ -16,21 +17,34 @@ parser.add_argument('--model_a', '-a', type=str)
 parser.add_argument('--model_b', '-b', type=str)
 args = parser.parse_args()
 
-
-
 config_file = args.config_file
 with open(config_file, 'r') as f:
     config = yaml.safe_load(f)
 
 config = DotMap(config)
 
-wandb_run = wandb.init(
-    entity=config.logging.entity,
-    project=config.logging.project,
-    job_type="plot_interpolation",
-    config=config,
-    reinit=True,
-)
+wandb_args = {
+    "tags": config.logging.tags,
+    "config": config,
+    "mode": "online",
+}
+
+if not "WANDB_DIR" in os.environ.keys():
+    wandb_args["dir"] = "wandb"
+    os.makedirs(wandb_args["dir"], exist_ok=True)
+if not isinstance(config.logging.entity, DotMap):
+    wandb_args["entity"] = config.logging.entity
+if not isinstance(config.logging.project, DotMap):
+    wandb_args["project"] = config.logging.project
+
+wandb_run = wandb.init(**wandb_args)
+
+if not isinstance(config.logging.entity, DotMap):
+    wandb_args["entity"] = config.logging.entity
+if not isinstance(config.logging.project, DotMap):
+    wandb_args["project"] = config.logging.project
+
+wandb_run = wandb.init(**wandb_args)
 
 model1 = setup_model(config)
 model2 = setup_model(config)

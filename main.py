@@ -43,12 +43,14 @@ def training_experiment(config, logger):
         wandb_run = logger.wandb_run
     except:
         wandb_args = {
-            "dir": os.environ["WANDB_DIR"],
             "tags": config.logging.tags,
             "config": config,
             "mode": "online",
         }
 
+        if not "WANDB_DIR" in os.environ.keys():
+            wandb_args["dir"] = "wandb"
+            os.makedirs(wandb_args["dir"], exist_ok=True)
         if not isinstance(config.logging.entity, DotMap):
             wandb_args["entity"] = config.logging.entity
         if not isinstance(config.logging.project, DotMap):
