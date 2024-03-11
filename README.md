@@ -44,7 +44,6 @@ TODO: insert arxiv link
    - `cifar10_resnet18_star.yaml`
 7. Change the wandb `entity` and `project` values.
 8.  Go to `dataloaders/constants.py` and change any dataset paths that you might need to.
-9. `main.py` uses a `SCRATCH` environment variable. Set it to a suitable folder using `export SCRATCH=<DIR>`.
 
 ### Running experiments :test_tube:
 
@@ -54,7 +53,7 @@ TODO: insert arxiv link
    $ python main.py <PATH_TO_CONFIG_FILE>
    ```
 
-### Plotting 
+### Plotting :chart_with_upwards_trend::chart_with_downwards_trend:
 
 You can plot the loss barrier between two given models using:
 

@@ -4,7 +4,7 @@ TODO: insert arxiv link
 
 ## Instructions
 
-You will need to use a Slurm-based computing cluster to run the experiments.
+You will need to use a Slurm-based computing cluster to run the experiments using STUNED.
 
 ### Source code
 
@@ -45,7 +45,7 @@ We use Google Sheets to configure the experiments, and store results in a handy 
    1. Set `slurm:output`, `slurm:time`, `slurm:partition` and `slurm:error` to reflect the settings that you would use in a slurm job.
    2. Set `delta:exp_type` to either `train_anchor` for regular models and `train_star` for star models.
    3. Set `whether_to_run` to 1 for the rows / experiments that you wish to run. 
-   4. Set `delta:eval.held_out_anchors` and `delta:model.anchor_model_wandb_ids` to lists of WandB run IDs, after you have generated the requisite runs.
+   4. Set `delta:eval.held_out_anchors` and `delta:model.anchor_model_wandb_ids` to lists of WandB run IDs, after you have completed the requisite runs.
    5. Modify any other values as required (the default settings would be good enough for reproducing the results from the paper).
 
 ### Running Experiments
