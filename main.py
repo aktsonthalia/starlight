@@ -42,14 +42,20 @@ def training_experiment(config, logger):
     try:
         wandb_run = logger.wandb_run
     except:
-        wandb_run = wandb.init(
-            dir=os.environ["WANDB_DIR"],
-            entity=config.logging.entity,
-            project=config.logging.project,
-            tags=config.logging.tags,
-            config=config,
-            mode="online",
-        )
+        wandb_args = {
+            "dir": os.environ["WANDB_DIR"],
+            "tags": config.logging.tags,
+            "config": config,
+            "mode": "online",
+        }
+
+        if not isinstance(config.logging.entity, DotMap):
+            wandb_args["entity"] = config.logging.entity
+        if not isinstance(config.logging.project, DotMap):
+            wandb_args["project"] = config.logging.project
+
+        wandb_run = wandb.init(**wandb_args)
+
     wandb_run.log_code(".")
     checkpoints = wandb.Artifact(
         f"{config.dataset.name}-{config.model.name}-weights", type="model-weights"
@@ -145,7 +151,12 @@ def training_experiment(config, logger):
                 time.sleep(5)
 
     # save model weights
-    ckpt_file = f"{os.environ['SCRATCH']}/{wandb_run.id}_checkpoint{epoch}.pt"
+    try:
+        ckpt_file = f"{os.environ['SCRATCH']}/{wandb_run.id}_checkpoint{epoch}.pt"
+    except:
+        os.makedirs("checkpoints", exist_ok=True)
+        ckpt_file = f"checkpoints/{wandb_run.id}_checkpoint{epoch}.pt"
+        
     state_dict = model.state_dict()
     if config.training.parallel:
         state_dict = {k[7:]: v for k, v in state_dict.items()}

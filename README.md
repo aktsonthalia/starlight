@@ -9,7 +9,7 @@ TODO: insert arxiv link
 1. Clone this repository:
 
     ```
-    $ git clone https://github.com/aktsonthalia/starlight
+    $ git clone https://github.com/aktsonthalia/starlight --recursive
     ```
 
 2. Create a new conda environment and install the requirements:
@@ -43,13 +43,12 @@ TODO: insert arxiv link
 6. You will find config files in `configs/`. Open the configuration file for the experiment you wish to run (names are self-explanatory).
    - `cifar10_resnet18_star.yaml`
 7. Change the wandb `entity` and `project` values.
-8. Make any changes that might be needed in your case.
-9.  Go to `dataloaders/constants.py` and change any dataset paths that you might need to.
-10. `main.py` uses a `SCRATCH` environment variable. Set it to a suitable folder using `export SCRATCH=<DIR>`.
+8.  Go to `dataloaders/constants.py` and change any dataset paths that you might need to.
+9. `main.py` uses a `SCRATCH` environment variable. Set it to a suitable folder using `export SCRATCH=<DIR>`.
 
 ### Running experiments :test_tube:
 
-9.  Run the training script:
+10.  Run the training script:
    
    ```
    $ python main.py <PATH_TO_CONFIG_FILE>
