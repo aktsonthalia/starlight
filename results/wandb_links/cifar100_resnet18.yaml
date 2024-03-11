@@ -1,0 +1,14 @@
+# just examples
+
+held_out:
+  - https://wandb.ai/mode-connect/star-domain/runs/run1
+  - https://wandb.ai/mode-connect/star-domain/runs/run2
+  - https://wandb.ai/mode-connect/star-domain/runs/run3
+anchors:
+  - https://wandb.ai/mode-connect/star-domain/runs/run4
+  - https://wandb.ai/mode-connect/star-domain/runs/run5
+  - https://wandb.ai/mode-connect/star-domain/runs/run6
+stars:
+  - https://wandb.ai/mode-connect/star-domain/runs/run7
+  - https://wandb.ai/mode-connect/star-domain/runs/run8
+  - https://wandb.ai/mode-connect/star-domain/runs/run9
