@@ -20,6 +20,10 @@ def create_model_paths(folder, output_file):
         for path in paths:
             file.write(path + '\n')
 
+# remove / from the folder name's end
+if folder[-1] == '/':
+    folder = folder[:-1]
+
 anchors_folder = os.path.join(folder, "anchors")
 output_file = folder.split('/')[-1] + "_anchors.txt"
 create_model_paths(anchors_folder, output_file)
