@@ -1,6 +1,5 @@
-from constants import PROJECT_PATH
 import sys
-sys.path.append(PROJECT_PATH)   
+sys.path.append("..")   
 
 import argparse
 import yaml
