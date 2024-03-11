@@ -42,12 +42,12 @@ training:
       momentum: 0.9
       nesterov: 1
   scheduler:
-    name: step
+    name: calr
     settings:
-      step_lr_milestones: [60, 120, 160]
       cosine_steps_factor: 1
+      cooldown_steps: 0
       warmup_steps: 0
-      step_lr_gamma: 0.2
+      nesterov: 0
   use_grad_clip: 0
   parallel: 0
 eval:
