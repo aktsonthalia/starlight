@@ -43,11 +43,11 @@ TODO: insert arxiv link
 6. You will find config files in `configs/`. Open the configuration file for the experiment you wish to run (names are self-explanatory).
    - `cifar10_resnet18_star.yaml`
 7. Change the wandb `entity` and `project` values.
-8.  Go to `dataloaders/constants.py` and change any dataset paths that you might need to.
+8.  Go to `dataloaders/constants.py` and change any dataset paths that you might need to. Otherwise, default values will be used.
 
 ### Running experiments :test_tube:
 
-10.  Run the training script:
+9.  Run the training script:
    
    ```
    $ python main.py <PATH_TO_CONFIG_FILE>
