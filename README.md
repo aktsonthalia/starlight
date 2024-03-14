@@ -87,7 +87,7 @@ $ python plot_barriers.py -c <CONFIG_FILE from configs/> -a <PATH_TO_MODEL_A_CHE
    1. [ResNet](https://github.com/kuangliu/pytorch-cifar/blob/master/models/resnet.py).
    2. [DenseNet](https://github.com/andreasveit/densenet-pytorch/blob/master/densenet.py).
    3. [rebasin](https://pypi.org/project/rebasin/).
-   4. 
+   4. [ffcv](https://github.com/libffcv/ffcv)
 
 ## Issues and Updates 🔧
 
