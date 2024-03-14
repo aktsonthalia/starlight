@@ -1,6 +1,17 @@
-Source code for the paper "Do Deep Neural Network Solutions form a Star Domain?"
+Source code for the paper [Do Deep Neural Network Solutions form a Star Domain?](https://arxiv.org/abs/2403.07968)
 
-TODO: insert arxiv link
+If you find this work useful, please consider citing:
+
+```
+@misc{sonthalia2024deep,
+      title={Do Deep Neural Network Solutions Form a Star Domain?}, 
+      author={Ankit Sonthalia and Alexander Rubinstein and Ehsan Abbasnejad and Seong Joon Oh},
+      year={2024},
+      eprint={2403.07968},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG}
+}
+```
 
 ## Instructions
 
