@@ -41,6 +41,10 @@ If you find this work useful, please consider citing:
 4. You can download pretrained models as zip files. Once they have been downloaded, extract them.
 
 - [CIFAR10-ResNet18](https://drive.google.com/file/d/1g-TxEGbORtHmxVEefoJtk2yxSf_mHL28/view?usp=drive_link)
+- [CIFAR100-ResNet18](https://drive.google.com/file/d/1zTH5_YBM9h4AYfeQWhkJyqXW_14xS38B/view?usp=drive_link)
+- [CIFAR10-DenseNet](https://drive.google.com/file/d/1zTH5_YBM9h4AYfeQWhkJyqXW_14xS38B/view?usp=drive_link)
+- [CIFAR100-DenseNet](https://drive.google.com/file/d/1ehiFGtrF-p3MKvHRBFDUA5qzyI0s1GiS/view?usp=sharing)
+- [ImageNet1k-ResNet18](https://drive.google.com/file/d/1ehiFGtrF-p3MKvHRBFDUA5qzyI0s1GiS/view?usp=sharing)
 
 5. Run the script `model_paths/create_model_paths.py`:
    ```
