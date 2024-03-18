@@ -42,9 +42,9 @@ If you find this work useful, please consider citing:
 
 - [CIFAR10-ResNet18](https://drive.google.com/file/d/1g-TxEGbORtHmxVEefoJtk2yxSf_mHL28/view?usp=drive_link)
 - [CIFAR100-ResNet18](https://drive.google.com/file/d/1zTH5_YBM9h4AYfeQWhkJyqXW_14xS38B/view?usp=drive_link)
-- [CIFAR10-DenseNet](https://drive.google.com/file/d/1zTH5_YBM9h4AYfeQWhkJyqXW_14xS38B/view?usp=drive_link)
+- [CIFAR10-DenseNet](https://drive.google.com/file/d/1Iqc2Hm7Y5pNYD_0UMNhkGq4SahBHwvQ2/view?usp=sharing)
 - [CIFAR100-DenseNet](https://drive.google.com/file/d/1ehiFGtrF-p3MKvHRBFDUA5qzyI0s1GiS/view?usp=sharing)
-- [ImageNet1k-ResNet18](https://drive.google.com/file/d/1ehiFGtrF-p3MKvHRBFDUA5qzyI0s1GiS/view?usp=sharing)
+- [ImageNet1k-ResNet18](https://drive.google.com/file/d/1zeiXwEbTc8Pw91qMwNSbr7hKW1xhgybg/view?usp=sharing)
 
 5. Run the script `model_paths/create_model_paths.py`:
    ```
