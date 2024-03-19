@@ -1,6 +1,17 @@
-Source code for the paper "Do Deep Neural Network Solutions form a Star Domain?"
+Source code for the paper [Do Deep Neural Network Solutions form a Star Domain?](https://arxiv.org/abs/2403.07968)
 
-TODO: insert arxiv link
+If you find this work useful, please consider citing:
+
+```
+@misc{sonthalia2024deep,
+      title={Do Deep Neural Network Solutions Form a Star Domain?}, 
+      author={Ankit Sonthalia and Alexander Rubinstein and Ehsan Abbasnejad and Seong Joon Oh},
+      year={2024},
+      eprint={2403.07968},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG}
+}
+```
 
 ## Instructions
 
@@ -30,6 +41,10 @@ TODO: insert arxiv link
 4. You can download pretrained models as zip files. Once they have been downloaded, extract them.
 
 - [CIFAR10-ResNet18](https://drive.google.com/file/d/1g-TxEGbORtHmxVEefoJtk2yxSf_mHL28/view?usp=drive_link)
+- [CIFAR100-ResNet18](https://drive.google.com/file/d/1zTH5_YBM9h4AYfeQWhkJyqXW_14xS38B/view?usp=drive_link)
+- [CIFAR10-DenseNet](https://drive.google.com/file/d/1Iqc2Hm7Y5pNYD_0UMNhkGq4SahBHwvQ2/view?usp=sharing)
+- [CIFAR100-DenseNet](https://drive.google.com/file/d/1ehiFGtrF-p3MKvHRBFDUA5qzyI0s1GiS/view?usp=sharing)
+- [ImageNet1k-ResNet18](https://drive.google.com/file/d/1zeiXwEbTc8Pw91qMwNSbr7hKW1xhgybg/view?usp=sharing)
 
 5. Run the script `model_paths/create_model_paths.py`:
    ```
@@ -43,11 +58,11 @@ TODO: insert arxiv link
 6. You will find config files in `configs/`. Open the configuration file for the experiment you wish to run (names are self-explanatory).
    - `cifar10_resnet18_star.yaml`
 7. Change the wandb `entity` and `project` values.
-8.  Go to `dataloaders/constants.py` and change any dataset paths that you might need to.
+8.  Go to `dataloaders/constants.py` and change any dataset paths that you might need to. Otherwise, default values will be used.
 
 ### Running experiments :test_tube:
 
-10.  Run the training script:
+9.  Run the training script:
    
    ```
    $ python main.py <PATH_TO_CONFIG_FILE>
@@ -76,5 +91,10 @@ $ python plot_barriers.py -c <CONFIG_FILE from configs/> -a <PATH_TO_MODEL_A_CHE
    1. [ResNet](https://github.com/kuangliu/pytorch-cifar/blob/master/models/resnet.py).
    2. [DenseNet](https://github.com/andreasveit/densenet-pytorch/blob/master/densenet.py).
    3. [rebasin](https://pypi.org/project/rebasin/).
+   4. [ffcv](https://github.com/libffcv/ffcv)
 
---
+## Issues and Updates 🔧
+
+Feel free to open an issue, if you find a bug, or would like to see a new feature.
+
+Check [the issues](https://github.com/aktsonthalia/starlight/labels/enhancement) for planned improvements. If you wish, you may also open pull requests addressing them.
