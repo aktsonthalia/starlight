@@ -1,0 +1,61 @@
+debug: 0
+exp_type: train_star
+perform_battle_tests: 0
+interpolation:
+  num_points: 21
+params:
+  random_seed: 0
+dataset:
+  name: cifar10
+  settings:
+    batch_size: 64
+    num_workers: 8
+    img_size: 32
+    normalize: 1
+    resize: 0
+    horizontal_flip: 1
+    pad_random_crop: 1
+    vertical_flip: 0
+    random_crop_resize: 0
+    random_resize_crop: 0
+    color_jitter: 0
+    rotation_range: 0
+    random_one_aug: 0
+model:
+  name: densenet_cifar
+  settings:
+    num_classes: 10
+    dropout: 0.2
+  pretrained:
+    use_pretrained: 0
+    wandb_id: none
+  permute_anchors: 0
+  anchor_model_paths: model_paths/cifar10_densenet_anchors.txt
+training:
+  num_epochs: 300
+  label_smoothing: 0.0
+  mu_star: 0
+  optimizer:
+    name: sgd
+    settings:
+      learning_rate: 0.1
+      weight_decay: 0.0001
+      momentum: 0.9
+      nesterov: 1
+  scheduler:
+    name: step
+    settings:
+      cosine_steps_factor: 1
+      cooldown_steps: 0
+      warmup_steps: 0
+      nesterov: 1
+      step_lr_milestones: [150, 225]
+      step_lr_gamma: 0.1
+  use_grad_clip: 0
+  parallel: 0
+eval:
+  held_out_model_paths: model_paths/cifar10_densenet_held_out.txt
+logging:
+  entity: mode-connect # change it to your wandb entity
+  project: star-domain # change it to your wandb project
+  tags: []
