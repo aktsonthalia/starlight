@@ -58,6 +58,8 @@ If you find this work useful, please consider citing:
 6. You will find config files in `configs/`. Open the configuration file for the experiment you wish to run (names are self-explanatory).
    - `cifar10_resnet18_star.yaml`
    - `cifar100_resnet18_star.yaml`
+   - `cifar10_densenet_star.yaml`
+   - `cifar100_densenet_star.yaml`
 7. Change the wandb `entity` and `project` values.
 8.  Go to `dataloaders/constants.py` and change any dataset paths that you might need to. Otherwise, default values will be used.
 
