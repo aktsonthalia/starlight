@@ -352,6 +352,12 @@ class StarDomain:
         self.interpolated_model = copy.deepcopy(star_model).cuda()
         self.perform_battle_tests = config.perform_battle_tests
 
+        assert config.training.t_sampling_scheme_star in [
+            "uniform",
+            "normal"
+        ], "invalid value for training.t_sampling_scheme_star!"
+        self.t_sampling_scheme_star = config.training.t_sampling_scheme_star
+
     def populate_star_model_gradients(self, batch, loss_fn, mu_star=0, mem_saving_mode=False):
 
         x, y = batch
@@ -361,7 +367,12 @@ class StarDomain:
             torch.randint(0, len(self.anchor_models), (1,)).item()
         ]
         anchor_model.cuda()
-        t = torch.rand((1,)).item()
+
+        if self.t_sampling_scheme_star == "normal":
+            t = np.random.beta(2, 2)
+        elif self.t_sampling_scheme_star == "uniform":
+            t = torch.rand((1,)).item()
+
         self.interpolated_model = interpolate_models(
             self.star_model, 
             anchor_model, 
