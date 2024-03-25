@@ -116,7 +116,7 @@ cfg = {
 
 
 class VGG(nn.Module):
-    def __init__(self, vgg_name, in_channels=3, out_features=10, h_in=28, w_in=28):
+    def __init__(self, vgg_name, in_channels=3, out_features=10, h_in=32, w_in=32):
         super(VGG, self).__init__()
 
         self.vgg_name = vgg_name
