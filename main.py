@@ -215,7 +215,8 @@ def training_experiment(config, logger):
                     model1=model, 
                     model2=anchor_model, 
                     train_dl=train_dl,
-                    recalculate_batch_statistics=True
+                    recalculate_batch_statistics=True,
+                    matching_scheme=config.permutation_scheme,
                 )
             loss_barrier, acc_barrier = make_interpolation_plot(
                 model1=model,
@@ -259,7 +260,8 @@ def training_experiment(config, logger):
                     model1=model, 
                     model2=anchor_model, 
                     train_dl=train_dl,
-                    recalculate_batch_statistics=True
+                    recalculate_batch_statistics=True,
+                    matching_scheme=config.permutation_scheme,
                 )
             loss_barrier, acc_barrier = make_interpolation_plot(
                 model1=model,

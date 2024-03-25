@@ -14,6 +14,12 @@ from torch import nn
 
 from rebasin import PermutationCoordinateDescent
 
+import sys
+sys.path.append("sinkhorn-rebasin")
+from sinkhorn_rebasin.rebasinnet import RebasinNet
+from sinkhorn_rebasin.loss import DistL1Loss
+
+
 from models import models_dict
 
 assertions = unittest.TestCase()
@@ -243,21 +249,60 @@ def interpolate_models(model1, model2, t, interpolated_model):
     
     return interpolated_model
 
-def match_weights(model1, model2, train_dl, recalculate_batch_statistics=False):
+def match_weights(
+        model1, 
+        model2, 
+        train_dl, 
+        recalculate_batch_statistics=False,
+        matching_scheme="ainsworth"
+    ):
     """Perform weight matching between two models.
     Changes the weights of model2 to match the weights of model1.
     Copies the weights of model2 into a different model, so that the original model2 is not modified.
     """
-    x = torch.randn((4, 3, train_dl.img_size, train_dl.img_size)).cuda()
-    pcd = PermutationCoordinateDescent(
-        model_a=model1, 
-        model_b=model2,
-        input_data_b=x, 
-        device_a=torch.device("cuda:0"), 
-        device_b=torch.device("cuda:0")
-    )
-    pcd.rebasin()
-    del x
+
+    assert matching_scheme in ["ainsworth", "sinkhorn"]
+
+    if matching_scheme == "ainsworth":
+        x = torch.randn((4, 3, train_dl.img_size, train_dl.img_size)).cuda()
+        pcd = PermutationCoordinateDescent(
+            model_a=model1, 
+            model_b=model2,
+            input_data_b=x, 
+            device_a=torch.device("cuda:0"), 
+            device_b=torch.device("cuda:0")
+        )
+        pcd.rebasin()
+        del x
+
+    if  matching_scheme == "sinkhorn":
+
+        model1.cuda()
+        model2 = RebasinNet(model2, input_shape=next(iter(train_dl))[0].shape)
+        model2.cuda()
+        model2.identity_init()
+        model2.train()
+
+        criterion = DistL1Loss(model1)
+        optimizer = torch.optim.AdamW(model2.p.parameters(), lr=10.0)
+
+        for _ in range(50):
+
+            model2.train() # soft
+            rebased_model = model2()
+            loss_training = criterion(rebased_model)  
+
+            optimizer.zero_grad()
+            loss_training.backward()
+            optimizer.step() 
+
+            model2.eval() # hard
+            rebased_model = model2()
+            loss_validation = criterion(rebased_model)
+
+            if loss_validation == 0:
+                break
+
     # recalculate batch statistics if necessary
     if recalculate_batch_statistics and has_batch_norm(model2):
         model2.train()
@@ -357,6 +402,7 @@ class StarDomain:
             "normal"
         ], "invalid value for training.t_sampling_scheme_star!"
         self.t_sampling_scheme_star = config.training.t_sampling_scheme_star
+        self.permutation_scheme = config.permutation_scheme
 
     def populate_star_model_gradients(self, batch, loss_fn, mu_star=0, mem_saving_mode=False):
 
@@ -431,9 +477,13 @@ class StarDomain:
         self.star_model.eval()
 
     def align_anchors_with_star(self):
-        print("Aligning anchors with star...")
         for i, anchor_model in enumerate(self.anchor_models):
-            self.anchor_models[i] = match_weights(self.star_model, anchor_model, train_dl=self.train_dl)
+            self.anchor_models[i] = match_weights(
+                self.star_model, 
+                anchor_model, 
+                train_dl=self.train_dl,
+                matching_scheme=self.permutation_scheme,
+            )
 
 
 def recalculate_batch_statistics(model, train_dl):
@@ -717,7 +767,7 @@ def model_distance(model1, model2, train_dl=None, permute=False):
             model1, 
             copy.deepcopy(model2), 
             train_dl, 
-            recalculate_batch_statistics=False
+            recalculate_batch_statistics=False,
         )
     distance = torch.norm(flatten_model(model1) - flatten_model(model2), p=2)
     return distance.item()
