@@ -60,7 +60,9 @@ def main():
 
             changes = {'seed': new_seed}
             if model_type == 'anchors':
-                changes['eval']['held_out_anchors'] = [x.split('/')[-1] for x in wandb_links_dict['held_out']]
+                changes['eval'] = {
+                    'held_out_anchors': [x.split('/')[-1] for x in wandb_links_dict['held_out']]
+                }
 
             temp_config_file = load_with_diff(
                 config_file_path, 
