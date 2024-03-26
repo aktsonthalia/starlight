@@ -41,6 +41,7 @@ def main():
     parser.add_argument('--wandb_links_file', '-w', type=str, help='Path to the file to store wandb links')
     parser.add_argument('--num_held_out', '-o', type=int, help='Number of held out models')
     parser.add_argument('--num_anchors', '-a', type=int, help='Number of anchor models')
+    parser.add_argument('--testing', '-t', action='store_true', help='Run in testing mode')
     args = parser.parse_args()
     MAIN_CONFIG_FILE = args.config
     WANDB_LINKS_FILE = args.wandb_links_file
@@ -48,6 +49,7 @@ def main():
     NUM_ANCHORS = int(args.num_anchors)
     HELD_OUT_SEEDS = [i for i in range(NUM_HELD_OUT)]
     ANCHOR_SEEDS = [i for i in range(NUM_HELD_OUT, NUM_HELD_OUT + NUM_ANCHORS)]
+    testing = args.testing
 
     wandb_links_dict = {
         "held_out": [],
@@ -69,6 +71,9 @@ def main():
                 changes['eval'] = {
                     'held_out_anchors': [x.split('/')[-1] for x in wandb_links_dict['held_out']]
                 }
+            
+            if testing:
+                changes['training'] = {'num_epochs': 1}
 
             temp_config_file = load_with_diff(
                 config_file_path, 
