@@ -33,18 +33,18 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--config', '-c', type=str, help='Path to the main config file')
     parser.add_argument('--wandb_links_file', '-w', type=str, help='Path to the file to store wandb links')
-    parser.add_argument('--num_held_out', '-h', type=int, help='Number of held out models')
+    parser.add_argument('--num_held_out', '-o', type=int, help='Number of held out models')
     parser.add_argument('--num_anchors', '-a', type=int, help='Number of anchor models')
     args = parser.parse_args()
     MAIN_CONFIG_FILE = args.config
     WANDB_LINKS_FILE = args.wandb_links_file
-    NUM_HELD_OUT = args.num_held_out
-    NUM_ANCHORS = args.num_anchors
+    NUM_HELD_OUT = int(args.num_held_out)
+    NUM_ANCHORS = int(args.num_anchors)
     HELD_OUT_SEEDS = [i for i in range(NUM_HELD_OUT)]
     ANCHOR_SEEDS = [i for i in range(NUM_HELD_OUT, NUM_HELD_OUT + NUM_ANCHORS)]
 
     wandb_links_dict = {
-        "held_out": []
+        "held_out": [],
         "anchors": [],
     }
 
