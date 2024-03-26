@@ -351,6 +351,7 @@ def load_models(config, base_model, mode="anchors"):
         try:
             wandb_ids = config.eval.held_out_anchors
             assert len(wandb_ids) > 0
+            print(f"Loading held out models from wandb ids... {wandb_ids}")
         except:
             wandb_ids = None
             with open(config.eval.held_out_model_paths, "r") as f:
