@@ -67,7 +67,7 @@ def main():
 
             print(f"Running with seed = {new_seed}...")
 
-            changes = {'seed': new_seed}
+            changes = {'params': {'random_seed': new_seed}}
             if model_type == 'anchors':
                 changes['eval'] = {
                     'held_out_anchors': [x.split('/')[-1] for x in wandb_links_dict['held_out']]
