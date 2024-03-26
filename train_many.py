@@ -9,9 +9,9 @@ from contextlib import suppress
 import os
 import shutil
 
-MAIN_CONFIG_FILE = 'configs/cifar10_vgg11_anchor.yaml'
+MAIN_CONFIG_FILE = 'configs/cifar10_wrn_16_1.yaml'
 SEEDS = [i for i in range(5)]
-WANDB_LINKS_FILE = 'vgg11_anchors.txt'
+WANDB_LINKS_FILE = 'cifar10_wrn_16_1_anchors.txt'
 
 def change_seed(config_file_path, new_seed):
     # Load YAML config file
@@ -27,8 +27,6 @@ def change_seed(config_file_path, new_seed):
         yaml.dump(config, file)
 
     return temp_config_file
-
-
     
 def main():
 
