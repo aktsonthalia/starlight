@@ -50,6 +50,7 @@ def main():
     HELD_OUT_SEEDS = [i for i in range(NUM_HELD_OUT)]
     ANCHOR_SEEDS = [i for i in range(NUM_HELD_OUT, NUM_HELD_OUT + NUM_ANCHORS)]
     testing = args.testing
+    print(f"Testing mode: {testing}")
 
     wandb_links_dict = {
         "held_out": [],
