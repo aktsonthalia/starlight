@@ -64,7 +64,7 @@ def load_model_from_wandb_id(entity, project, wandb_id):
                 if f.name == f"{wandb_id}_checkpoint{num_epochs-1}.pt"
             ][0]
             download_path = last_epoch_file.download(
-                replace=True, root=os.environ["SCRATCH"]
+                replace=True, root=os.environ["SCRATCH"] if "SCRATCH" in os.environ else "/workspace"
             ).name
             state_dict = torch.load(download_path)
             return state_dict
