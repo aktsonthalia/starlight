@@ -39,7 +39,7 @@ training:
     name: sgd
     settings:
       learning_rate: 0.1
-      weight_decay: 0.0001
+      weight_decay: 0.0005
       momentum: 0.9
       nesterov: 1
   scheduler:
