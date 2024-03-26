@@ -26,7 +26,7 @@ model:
   settings:
     num_classes: 10
     depth: 16
-    width: 1
+    widen_factor: 1
   pretrained:
     use_pretrained: 0
     wandb_id: none
