@@ -14,5 +14,5 @@ logging:
 use_hardcoded_config: False
 training:
   label_smoothing: 0.0
+  t_sampling_scheme_star: uniform
 permutation_scheme: ainsworth
-t_sampling_scheme_star: uniform
