@@ -8,11 +8,7 @@ from contextlib import suppress
 import os
 import shutil
 
-def load_with_diff(config_file_path, changes):
-
-    # Load original YAML config file
-    with open(config_file_path, 'r') as file:
-        original = yaml.safe_load(file)
+def apply_changes(original, changes):
 
     # Apply changes
     for key, value in changes.items():
@@ -20,6 +16,16 @@ def load_with_diff(config_file_path, changes):
             apply_changes(original[key], value)
         else:
             original[key] = value
+    
+    return original
+
+def load_with_diff(config_file_path, changes):
+
+    # Load original YAML config file
+    with open(config_file_path, 'r') as file:
+        original = yaml.safe_load(file)
+
+    original = apply_changes(original, changes)
 
     # Write modified config to a temporary file
     temp_config_file = tempfile.mktemp(suffix='.yaml')
