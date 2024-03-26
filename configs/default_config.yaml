@@ -15,3 +15,4 @@ use_hardcoded_config: False
 training:
   label_smoothing: 0.0
 permutation_scheme: ainsworth
+t_sampling_scheme_star: uniform
