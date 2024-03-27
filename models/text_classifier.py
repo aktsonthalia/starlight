@@ -1,24 +1,24 @@
 from torch import nn
-from pytorch_transformers import BertConfig, BertForSequenceClassification
 
-bert_config = BertConfig(
-    vocab_size=50000,
-    max_position_embeddings=768,
-    intermediate_size=2048,
-    hidden_size=512,
-    num_attention_heads=8,
-    num_hidden_layers=6,
-    type_vocab_size=5,
-    hidden_dropout_prob=0.1,
-    attention_probs_dropout_prob=0.1,
-    num_labels=2,
-)
+class SimpleTextClassifier(nn.Module):
+    def __init__(
+        self, 
+        num_classes,
+        vocab_size=95811,
+        embed_dim=64
+    ):
+        super(SimpleTextClassifier, self).__init__()
+        self.embedding = nn.EmbeddingBag(vocab_size, embed_dim, sparse=False)
+        self.fc = nn.Linear(embed_dim, num_classes)
+        self.init_weights()
 
-class Bert(nn.Module):
-    def __init__(self):
-        super(Bert, self).__init__()
-        self.net = BertForSequenceClassification(bert_config)
+    def init_weights(self):
+        initrange = 0.5
+        self.embedding.weight.data.uniform_(-initrange, initrange)
+        self.fc.weight.data.uniform_(-initrange, initrange)
+        self.fc.bias.data.zero_()
 
-    def forward(self, x):
-        
-        return self.net(x)[0]
+    def forward(self, inputs):
+        text, offsets = inputs
+        embedded = self.embedding(text, offsets)
+        return self.fc(embedded)
