@@ -1,6 +1,6 @@
 [submodule "STAI-tuned"]
 	path = STAI-tuned
-	url = https://github.com/aktsonthalia/starlight
+	url = https://github.com/aktsonthalia/STAI-tuned
 [submodule "sinkhorn-rebasin"]
 	path = sinkhorn-rebasin
 	url = https://github.com/aktsonthalia/sinkhorn-rebasin
