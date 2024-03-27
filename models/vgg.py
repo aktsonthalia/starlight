@@ -180,3 +180,10 @@ def vgg11(num_classes):
         vgg_name="VGG11",
         out_features=num_classes,
     )
+
+def vgg19(num_classes):
+
+    return VGG(
+        vgg_name="VGG19",
+        out_features=num_classes,
+    )
