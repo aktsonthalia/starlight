@@ -303,6 +303,8 @@ def match_weights(
             if loss_validation == 0:
                 break
 
+        model2 = rebased_model
+        
     # recalculate batch statistics if necessary
     if recalculate_batch_statistics and has_batch_norm(model2):
         model2.train()
