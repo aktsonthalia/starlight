@@ -400,7 +400,8 @@ class StarDomain:
 
         assert config.training.t_sampling_scheme_star in [
             "uniform",
-            "normal"
+            "normal",
+            "constant"
         ], "invalid value for training.t_sampling_scheme_star!"
         self.t_sampling_scheme_star = config.training.t_sampling_scheme_star
         self.permutation_scheme = config.permutation_scheme
@@ -419,6 +420,8 @@ class StarDomain:
             t = np.random.beta(2, 2)
         elif self.t_sampling_scheme_star == "uniform":
             t = torch.rand((1,)).item()
+        elif self.t_sampling_scheme_star == "constant":
+            t = 0.5
 
         self.interpolated_model = interpolate_models(
             self.star_model, 
