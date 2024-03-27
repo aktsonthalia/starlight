@@ -48,10 +48,8 @@ class SSTDataset(Dataset):
             binary: bool
                 If true, use binary labels. Else, use fine-grained.
         """
-        logger.info(f"Loading SST {split} set")
         self.sst = sst[split]
 
-        logger.info("Tokenizing")
         if root and binary:
             self.data = [
                 (
