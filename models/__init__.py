@@ -7,8 +7,7 @@ from .densenet import densenet_cifar as densenet_cifar
 from .resnet_cifar_std import ResNet18 as resnet18_cifar
 from .vgg import vgg11
 from .wide_resnet import Wide_ResNet
-
-sys.path.append("..")
+from .text_classifier import Bert
 
 models_dict = {
     "resnet18_cifar": resnet18_cifar,
@@ -16,7 +15,9 @@ models_dict = {
     "resnet50_torch": torchvision.models.resnet50,
     "densenet_cifar": densenet_cifar,
     "vgg11": vgg11,
-    "wrn": Wide_ResNet
+    "wrn": Wide_ResNet,
+    "bert": Bert
+
 }
 
 optimizers_dict = {
