@@ -3,14 +3,11 @@
 
 import pytreebank
 import torch
-from loguru import logger
 from pytorch_transformers import BertTokenizer
 from torch.utils.data import Dataset
 
-logger.info("Loading the tokenizer")
 tokenizer = BertTokenizer.from_pretrained("bert-large-uncased")
 
-logger.info("Loading SST")
 sst = pytreebank.load_sst()
 
 def rpad(array, n=70):
