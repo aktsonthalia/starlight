@@ -1,0 +1,61 @@
+debug: 0
+exp_type: train_anchor
+t_sampling_scheme_star: uniform
+permutation_scheme: ainsworth
+perform_battle_tests: 0
+interpolation:
+  num_points: 21
+params:
+  random_seed: 0
+dataset:
+  name: cifar10
+  settings:
+    batch_size: 128
+    num_workers: 8
+    img_size: 32
+    normalize: 1
+    resize: 0
+    horizontal_flip: 1
+    pad_random_crop: 1
+    vertical_flip: 0
+    random_crop_resize: 0
+    random_resize_crop: 0
+    color_jitter: 0
+    rotation_range: 0
+    random_one_aug: 0
+model:
+  name: wrn
+  settings:
+    num_classes: 10
+    depth: 16
+    widen_factor: 1
+  pretrained:
+    use_pretrained: 0
+    wandb_id: none
+  permute_anchors: 1
+eval:
+  held_out_anchors: []
+training:
+  num_epochs: 200
+  label_smoothing: 0.0
+  mu_star: 0
+  optimizer:
+    name: sgd
+    settings:
+      learning_rate: 0.1
+      weight_decay: 0.0005
+      momentum: 0.9
+      nesterov: 1 
+  scheduler:
+    name: calr
+    settings:
+      cosine_steps_factor: 1
+      cooldown_steps: 0
+      warmup_steps: 0
+      nesterov: 0
+  use_grad_clip: 0
+  parallel: 0
+logging:
+  entity: mode-connect # change it to your wandb entity
+  project: star-domain # change it to your wandb project
+  tags: []

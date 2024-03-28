@@ -1,3 +1,6 @@
 [submodule "STAI-tuned"]
 	path = STAI-tuned
-	url = git@github.com:aktsonthalia/STAI-tuned.git
+	url = https://github.com/aktsonthalia/STAI-tuned
+[submodule "sinkhorn-rebasin"]
+	path = sinkhorn-rebasin
+	url = https://github.com/aktsonthalia/sinkhorn-rebasin
