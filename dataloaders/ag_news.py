@@ -11,10 +11,14 @@ from .constants import *
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # define a subclass of tuple on which calling .cuda() will call .cuda() on each element
-class CudaTuple(tuple):
+class CudaObject:
+
+    def __init__(self, text, offsets):
+        self.text = text
+        self.offsets = offsets
 
     def cuda(self):
-        return tuple(map(lambda x: x.cuda(), self))
+        return CudaObject(self.text.cuda(), self.offsets.cuda())
 
 def load_ag_news(batch_size=64):
 
@@ -28,7 +32,7 @@ def load_ag_news(batch_size=64):
         label_list = torch.tensor(label_list, dtype=torch.int64)
         offsets = torch.tensor(offsets[:-1]).cumsum(dim=0)
         text_list = torch.cat(text_list)
-        return CudaTuple(text_list.to(device), offsets.to(device)), label_list.to(device)
+        return CudaObject(text=text_list, offsets=offsets), label_list.to(device)
 
     def yield_tokens(data_iter):
         for _, text in data_iter:
@@ -63,11 +67,3 @@ def load_ag_news(batch_size=64):
     )
 
     return train_dl, val_dl, test_dl
-
-if __name__ == "__main__":
-
-    test = CudaTuple((torch.tensor([1, 2, 3]), torch.tensor([4, 5, 6])))
-    test = test.cuda()
-    print(test)
-    breakpoint()
-    

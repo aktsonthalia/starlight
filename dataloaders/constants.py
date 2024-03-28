@@ -31,3 +31,4 @@ CIFAR100_STDS = IMAGENET_STDS
 IMAGENET_SIZE = (224, 224)
 
 AG_NEWS_PATH = os.path.join(DATASETS_PATH, "ag_news")
+SST_PATH = os.path.join(DATASETS_PATH, "sst")

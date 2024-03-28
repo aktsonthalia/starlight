@@ -264,7 +264,11 @@ def match_weights(
     assert matching_scheme in ["ainsworth", "sinkhorn"]
 
     if matching_scheme == "ainsworth":
-        x = torch.randn((4, 3, train_dl.img_size, train_dl.img_size)).cuda()
+        try:
+            x = torch.randn((4, 3, train_dl.img_size, train_dl.img_size)).cuda()
+        except:
+            x = next(iter(train_dl))[0].cuda()
+
         pcd = PermutationCoordinateDescent(
             model_a=model1, 
             model_b=model2,
