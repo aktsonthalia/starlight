@@ -539,7 +539,18 @@ def recalculate_batch_statistics(model, train_dl):
     model.eval()
     return model
 
-def make_interpolation_plot(model1, model2, dl, num_points, logger=None, plot_title="default title", loss_fn=F.cross_entropy, split="test", train_dl=None):
+def make_interpolation_plot(
+    model1, 
+    model2, 
+    dl, 
+    num_points, 
+    logger=None, 
+    plot_title="default title", 
+    loss_fn=F.cross_entropy, 
+    split="test", 
+    train_dl=None,
+    verbose=False
+):
 
     bn = has_batch_norm(model1)
 
@@ -583,6 +594,9 @@ def make_interpolation_plot(model1, model2, dl, num_points, logger=None, plot_ti
         loss, accuracy = dataset_loss_and_accuracy(
             interpolated_model, dl, loss_fn
         )
+
+        if verbose:
+            print(f"t: {t}, loss: {loss}, accuracy: {accuracy}")
 
         loss_barrier_candidate = loss - ((1 - t) * model1_loss + t * model2_loss)
         acc_barrier_candidate = accuracy - ((1 - t) * model1_acc + t * model2_acc)
