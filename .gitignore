@@ -16,3 +16,8 @@ results/figures/*
 
 # other python scripts
 
+.syncignore
+
+# output files
+experiments/*
+
