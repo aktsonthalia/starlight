@@ -86,6 +86,12 @@ for held_out_link in links_to_use['held_out']:
         anchor_id = anchor_link.split('/')[-1]
         model_id_pairs["anchor_held_out"].append((anchor_id, held_out_id))
 
+for anchor_link in links_to_use['anchors']:
+    anchor_id = anchor_link.split('/')[-1]
+    for star_link in links_to_use['stars']:
+        star_id = star_link.split('/')[-1]
+        model_id_pairs["star_anchor"].append((star_id, anchor_id))
+
 for model_pair_type, model_pairs in model_id_pairs.items():
 
     print(f"Processing {model_pair_type} models")
