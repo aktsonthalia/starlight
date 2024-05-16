@@ -2,7 +2,8 @@ import numpy as np
 import os 
 
 try:
-    DATASETS_PATH = os.path.join(os.environ["WORK"], "datasets") # set this to your own datasets path
+    # DATASETS_PATH = os.path.join(os.environ["WORK"], "datasets") # set this to your own datasets path
+    DATASETS_PATH = os.environ["SCRATCH"]
 except KeyError:
     DATASETS_PATH = "datasets"
     os.makedirs(DATASETS_PATH, exist_ok=True)
