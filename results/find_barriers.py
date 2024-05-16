@@ -22,7 +22,10 @@ from dataloaders import datasets_dict
 ENTITY = "mode-connect"
 PROJECT = "star-domain"
 INTERPOLATION_NUM_POINTS = 11
+NUM_SAMPLES = 5
+SEED = 42
 
+random.seed(SEED)
 parser = argparse.ArgumentParser()
 parser.add_argument('--dataset', type=str, required=True, help="dataset")
 parser.add_argument('--input_file', type=str, required=True, help="input file")
@@ -47,8 +50,7 @@ result = {
     "dataset": args.dataset,
     "setting": args.setting,
     "star_held_out": [],
-    "anchor_held_out": [],
-    "star_anchor": []
+    "anchor_held_out": []
 }
 
 # get config
@@ -60,24 +62,27 @@ config = DotMap(run.config)
 # setup dataset
 config.dataset.settings.horizontal_flip = False
 train_dl, val_dl, test_dl = datasets_dict[config.dataset.name](
-    batch_size=config.dataset.settings.batch_size,
-    normalize=config.dataset.settings.normalize,
+    **config.dataset.settings
 )
 
 # setup model pairs
 
 model_id_pairs = {
     "star_held_out": [],
-    "anchor_held_out": [],
-    "star_anchor": []
+    "star_anchor": [],
+    "anchor_held_out": []
 }
 
-# reduce number of held-outs and anchors to 3 each 
-random.seed(42)
-random.shuffle(links_to_use['held_out'])
-random.shuffle(links_to_use['anchors'])
-links_to_use['held_out'] = links_to_use['held_out'][:3]
-links_to_use['anchors'] = links_to_use['anchors'][:3]
+# reduce number of held-outs and anchors to SAMPLES
+
+try:
+    links_to_use['held_out'] = random.sample(links_to_use['held_out'], NUM_SAMPLES)
+    links_to_use['anchors'] = random.sample(links_to_use['anchors'], NUM_SAMPLES)
+except:
+    pass
+
+with open(output_file, 'w') as f:
+    yaml.dump(result, f)
 
 for held_out_link in links_to_use['held_out']:
     held_out_id = held_out_link.split('/')[-1]
