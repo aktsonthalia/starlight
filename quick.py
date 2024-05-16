@@ -1,67 +1,39 @@
-from models import models_dict
-from dataloaders import datasets_dict
-import wandb
-from utils import (
-    load_model_from_wandb_id,
-    make_interpolation_plot,
-    match_weights
-)
+from statistics import mean, stdev
+import yaml 
+import matplotlib.pyplot as plt
 
-ENTITY = "mode-connect"
-PROJECT = "star-domain"
-# load two vgg models
+widths = [4, 8, 16, 32, 64, 128, 256]
 
-MODEL_SETTINGS = {
-    "name": "vgg11",
-    "settings": {
-        "num_classes": 10
-    }
-}
-DATASET_SETTINGS = {
-    "name": "cifar10",
-    "settings": {
-        "batch_size": 128,
-        "num_workers": 4
-    }
-}
-WANDB_ID_1 = "jr8gqoit"
-WANDB_ID_2 = "sukzyv2p"
+regular_barrier_means = []
+regular_barrier_stdevs = []
+star_barrier_means = []
+star_barrier_stdevs = []
 
-train_dl, val_dl, test_dl = datasets_dict[DATASET_SETTINGS["name"]](**DATASET_SETTINGS["settings"])
+for width in widths:
 
-model1 = models_dict[MODEL_SETTINGS["name"]](**MODEL_SETTINGS["settings"])
-model1.load_state_dict(
-    load_model_from_wandb_id(
-        ENTITY, PROJECT, WANDB_ID_1
-    )
-)
+    result_file = f"results/out/mlp_mnist_depth_1_width_{width}.yaml"
+    with open(result_file, 'r') as f:
+        results = yaml.safe_load(f)
+    
+    regular_barriers = [item['train_loss_barrier'] for item in results['anchor_held_out']]
+    star_barriers = [item['train_loss_barrier'] for item in results['star_held_out']]
 
-model2 = models_dict[MODEL_SETTINGS["name"]](**MODEL_SETTINGS["settings"])
-model2.load_state_dict(
-    load_model_from_wandb_id(
-        ENTITY, PROJECT, WANDB_ID_2
-    )
-)
+    regular_barrier_means.append(mean(regular_barriers))
+    regular_barrier_stdevs.append(stdev(regular_barriers))
+    star_barrier_means.append(mean(star_barriers))
+    star_barrier_stdevs.append(stdev(star_barriers))
 
-# make wandb run
+print(regular_barrier_means)
+print(regular_barrier_stdevs)
+print(star_barrier_means)
+print(star_barrier_stdevs)
 
-wandb_run = wandb.init(
-    entity=ENTITY,
-    project=PROJECT,
-    job_type="interpolation",
-    config={
-        "model_settings": MODEL_SETTINGS,
-        "dataset_settings": DATASET_SETTINGS,
-        "wandb_id_1": WANDB_ID_1,
-        "wandb_id_2": WANDB_ID_2
-    }
-)
+# plot these barriers wrt width on x axis
 
-make_interpolation_plot(
-    model1=model1,
-    model2=model2,
-    train_dl=train_dl,
-    dl=test_dl,
-    plot_title=f"before matching"
-)
 
+plt.errorbar(widths, regular_barrier_means, yerr=regular_barrier_stdevs, label='regular-regular', marker='o')
+plt.errorbar(widths, star_barrier_means, yerr=star_barrier_stdevs, label='star-regular', marker='o')
+plt.xlabel('Width')
+plt.ylabel('Train Loss Barrier')    
+plt.legend()  
+plt.savefig('results/figures/mlp_barriers_vs_width.png')    

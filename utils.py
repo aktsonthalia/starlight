@@ -16,8 +16,8 @@ from rebasin import PermutationCoordinateDescent
 
 import sys
 sys.path.append("sinkhorn-rebasin")
-from sinkhorn_rebasin.rebasinnet import RebasinNet
-from sinkhorn_rebasin.loss import DistL1Loss
+# from sinkhorn_rebasin.rebasinnet import RebasinNet
+# from sinkhorn_rebasin.loss import DistL1Loss
 
 
 from models import models_dict
@@ -264,10 +264,10 @@ def match_weights(
     assert matching_scheme in ["ainsworth", "sinkhorn"]
 
     if matching_scheme == "ainsworth":
-        try:
-            x = torch.randn((4, 3, train_dl.img_size, train_dl.img_size)).cuda()
-        except:
-            x = next(iter(train_dl))[0].cuda()
+        # try:
+        #     x = torch.randn((4, 3, train_dl.img_size, train_dl.img_size)).cuda()
+        # except:
+        x = next(iter(train_dl))[0].cuda()
 
         pcd = PermutationCoordinateDescent(
             model_a=model1, 
@@ -542,43 +542,45 @@ def recalculate_batch_statistics(model, train_dl):
 def make_interpolation_plot(
     model1, 
     model2, 
-    dl, 
+    train_dl,
+    test_dl, 
     num_points, 
     logger=None, 
     plot_title="default title", 
     loss_fn=F.cross_entropy, 
-    split="test", 
-    train_dl=None,
-    verbose=False
+    verbose=False,
 ):
 
     bn = has_batch_norm(model1)
 
-    loss_barrier = 0
-    acc_barrier = 101
+    train_loss_barrier = 0
+    train_acc_barrier = 0
+    test_loss_barrier = 0
+    test_acc_barrier = 0
 
     model1.eval()
     model2.eval()
 
-    model1_loss, model1_acc = dataset_loss_and_accuracy(model1, dl, loss_fn)
-    model2_loss, model2_acc = dataset_loss_and_accuracy(model2, dl, loss_fn)
+    model1_train_loss, model1_train_acc = dataset_loss_and_accuracy(model1, train_dl, loss_fn)
+    model2_train_loss, model2_train_acc = dataset_loss_and_accuracy(model2, train_dl, loss_fn)
+    model1_test_loss, model1_test_acc = dataset_loss_and_accuracy(model1, test_dl, loss_fn)
+    model2_test_loss, model2_test_acc = dataset_loss_and_accuracy(model2, test_dl, loss_fn)
     
     ts = torch.linspace(0, 1, num_points)
-    losses = []
-    accuracies = []
+    train_losses = [round(model1_train_loss, 3)]
+    train_accuracies = [round(model1_train_acc*100, 3)]
+    test_losses = [round(model1_test_loss, 3)]
+    test_accuracies = [round(model1_test_acc*100, 3)]
 
     for t in ts:
-        
+
         t = t.item()
-        if t == 0:
-            interpolated_model = copy.deepcopy(model1)
-        elif t == 1:
-            interpolated_model = copy.deepcopy(model2)
-        else:
-            interpolated_model = copy.deepcopy(model1)
-            interpolated_model = interpolate_models(
-                model1, model2, t, interpolated_model
-            )
+        if t == 0 or t == 1:
+            continue
+        interpolated_model = copy.deepcopy(model1)
+        interpolated_model = interpolate_models(
+            model1, model2, t, interpolated_model
+        )
         interpolated_model.eval()
 
         if bn and t > 0 and t < 1:
@@ -591,28 +593,40 @@ def make_interpolation_plot(
                 _ = interpolated_model(x)
             interpolated_model.eval()
 
-        loss, accuracy = dataset_loss_and_accuracy(
-            interpolated_model, dl, loss_fn
-        )
+        train_loss, train_acc = dataset_loss_and_accuracy(interpolated_model, train_dl, loss_fn)
+        test_loss, test_acc = dataset_loss_and_accuracy(interpolated_model, test_dl, loss_fn)
 
         if verbose:
-            print(f"t: {t}, loss: {loss}, accuracy: {accuracy}")
+            print(f"t: {t}, train_loss: {train_loss}, train_acc: {train_acc}, test_loss: {test_loss}, test_acc: {test_acc}")
 
-        loss_barrier_candidate = loss - ((1 - t) * model1_loss + t * model2_loss)
-        acc_barrier_candidate = accuracy - ((1 - t) * model1_acc + t * model2_acc)
+        train_loss_barrier_candidate = train_loss - ((1 - t) * model1_train_loss + t * model2_train_loss)
+        test_loss_barrier_candidate = test_loss - ((1 - t) * model1_test_loss + t * model2_test_loss)
+        train_acc_barrier_candidate = train_acc - ((1 - t) * model1_train_acc + t * model2_train_acc)
+        test_acc_barrier_candidate = test_acc - ((1 - t) * model1_test_acc + t * model2_test_acc)
 
-        if loss_barrier_candidate > loss_barrier:
-            loss_barrier = loss_barrier_candidate
-        if acc_barrier_candidate < acc_barrier:
-            acc_barrier = acc_barrier_candidate
+        if train_loss_barrier_candidate > train_loss_barrier:
+            train_loss_barrier = train_loss_barrier_candidate
+        if test_loss_barrier_candidate > test_loss_barrier:
+            test_loss_barrier = test_loss_barrier_candidate
+        if train_acc_barrier_candidate < train_acc_barrier:
+            train_acc_barrier = train_acc_barrier_candidate
+        if test_acc_barrier_candidate < test_acc_barrier:
+            test_acc_barrier = test_acc_barrier_candidate
 
-        losses.append(loss)
-        accuracies.append(accuracy)
-        # print(f"t: {t}, loss: {loss}, accuracy: {accuracy}")
-    
+        # append loss and accuracy upto 3 decimal places
+        train_losses.append(round(train_loss, 3))
+        train_accuracies.append(round(train_acc*100, 3))
+        test_losses.append(round(test_loss, 3))
+        test_accuracies.append(round(test_acc*100, 3))
+
+    train_losses.append(round(model2_train_loss, 3))
+    train_accuracies.append(round(model2_train_acc*100, 3))
+    test_losses.append(round(model2_test_loss, 3))
+    test_accuracies.append(round(model2_test_acc*100, 3))
+
     # plot in wandb
-    data = [[t.item(), loss, acc] for t, loss, acc in zip(ts, losses, accuracies)]
     try:
+        data = [[t.item(), loss, acc] for t, loss, acc in zip(ts, losses, accuracies)]
         table = wandb.Table(data=data, columns=["t", f"{split}_loss", f"{split}_acc"])
         wandb.log(
             {
@@ -631,7 +645,16 @@ def make_interpolation_plot(
     except:
         pass
 
-    return loss_barrier, acc_barrier
+    return {
+        "train_loss_barrier": train_loss_barrier,
+        "train_acc_barrier": train_acc_barrier,
+        "test_loss_barrier": test_loss_barrier,
+        "test_acc_barrier": test_acc_barrier,
+        "train_losses": train_losses,
+        "train_accuracies": train_accuracies,
+        "test_losses": test_losses,
+        "test_accuracies": test_accuracies,
+    }
 
 
 class StepLRWithMilestones:
@@ -796,6 +819,8 @@ def model_distance(model1, model2, train_dl=None, permute=False):
     distance = torch.norm(flatten_model(model1) - flatten_model(model2), p=2)
     return distance.item()
 
+def model_dot_product(model1, model2):
+    return torch.dot(flatten_model(model1), flatten_model(model2)).item()
 
 @torch.no_grad()
 def extensive_evaluation(model, dl):

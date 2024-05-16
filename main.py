@@ -126,8 +126,8 @@ def training_experiment(config, logger):
             train_accuracy += accuracy_tmp.item()
             
             del x, y, out, batch
-    
-        scheduler.step()
+
+        if scheduler is not None: scheduler.step()
 
         # if training a star model and using batch norm, recalculate batch stats
         if config.exp_type in ["train_star"] and has_batch_norm(model):
@@ -154,7 +154,7 @@ def training_experiment(config, logger):
                 print("wandb logging failed, trying again")
                 time.sleep(5)
 
-    # save model weights
+    # save. model weights
     try:
         ckpt_file = f"{os.environ['SCRATCH']}/{wandb_run.id}_checkpoint{epoch}.pt"
     except:
@@ -190,117 +190,6 @@ def training_experiment(config, logger):
 
     try:
         try_to_log_in_csv_in_batch(logger, csv_results)
-    except:
-        pass
-
-    # also interpolate against held-out models
-    if config.exp_type == "train_star" and not config.skip_computing_barriers:
-
-        # barriers with training anchors
-        loss_barriers = []
-        acc_barriers = []
-
-        # randomly choose 5 anchors, if the total number of anchors is > 5
-        # otherwise, use all anchors
-        if config.dataset.name == "imagenet1k":
-            num_training_anchors = 2
-        else:
-            num_training_anchors = 5
-        indices = torch.randperm(len(star_domain.anchor_models)).tolist()
-        if len(star_domain.anchor_models) > num_training_anchors:
-            indices = indices[:num_training_anchors]
-
-        for i in indices:
-            anchor_model = star_domain.anchor_models[i]
-            if config.model.permute_anchors:
-                anchor_model = match_weights(
-                    model1=model, 
-                    model2=anchor_model, 
-                    train_dl=train_dl,
-                    recalculate_batch_statistics=True,
-                    matching_scheme=config.permutation_scheme,
-                )
-            loss_barrier, acc_barrier = make_interpolation_plot(
-                model1=model,
-                model2=anchor_model,
-                dl=test_dl,
-                num_points=config.interpolation.num_points,
-                logger=logger,
-                plot_title=f"star-training-anchor-{i}",
-                loss_fn=loss_fn_eval,
-                train_dl=train_dl
-            )
-            loss_barriers.append(loss_barrier)
-            acc_barriers.append(acc_barrier)
-
-        try: 
-            try_to_log_in_csv_in_batch(logger,
-                [
-                    ["avg_barrier_acc_training", mean(acc_barriers)],
-                    ["avg_barrier_loss_training", mean(loss_barriers)],
-                ]
-            )
-        except:
-            pass
-
-        wandb_run.log({
-            "avg_barrier_acc_training": mean(acc_barriers),
-            "all_barriers_acc_training": acc_barriers,
-            "avg_barrier_loss_training": mean(loss_barriers),
-            "all_barriers_loss_training": loss_barriers,
-        })
-        
-    # barriers with held-out anchors
-    if (config.eval.held_out_anchors or config.eval.held_out_model_paths) and not config.skip_computing_barriers:
-        loss_barriers = []
-        acc_barriers = []
-        held_out_anchors = load_models(config, model, "held_out")
-
-        for i, anchor_model in enumerate(held_out_anchors):
-            if config.model.permute_anchors:
-                anchor_model = match_weights(
-                    model1=model, 
-                    model2=anchor_model, 
-                    train_dl=train_dl,
-                    recalculate_batch_statistics=True,
-                    matching_scheme=config.permutation_scheme,
-                )
-            loss_barrier, acc_barrier = make_interpolation_plot(
-                model1=model,
-                model2=anchor_model,
-                dl=test_dl,
-                num_points=config.interpolation.num_points,
-                logger=logger,
-                plot_title=f"interp_with_held_out-{i}",
-                loss_fn=loss_fn_eval,
-                train_dl=train_dl
-            )
-            loss_barriers.append(loss_barrier)
-            acc_barriers.append(acc_barrier)
-
-        try:
-            try_to_log_in_csv_in_batch(logger, 
-                [
-                    ["avg_barrier_acc_held_out", f"{mean(acc_barriers):.5f}"],
-                    ["avg_barrier_loss_held_out", f"{mean(loss_barriers):.3f}"],
-                ]
-            )
-        except:
-            pass
-
-        wandb_run.log({
-            "avg_barrier_acc_held_out": mean(acc_barriers),
-            "all_barriers_acc_held_out": acc_barriers,
-            "avg_barrier_loss_held_out": mean(loss_barriers),
-            "all_barriers_loss_held_out": loss_barriers,
-        })
-
-    # calculate calibration error
-    calibration_error = compute_calibration_error(model=model, dl=test_dl, num_classes=config.model.settings.num_classes)
-    wandb_run.log({"calibration_error": calibration_error})
-
-    try:
-        try_to_log_in_csv_in_batch(logger, [["calibration_error", f"{calibration_error:.5f}"]])
     except:
         pass
 

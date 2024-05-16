@@ -2,7 +2,8 @@ import numpy as np
 import os 
 
 try:
-    DATASETS_PATH = os.path.join(os.environ["WORK"], "datasets") # set this to your own datasets path
+    # DATASETS_PATH = os.path.join(os.environ["WORK"], "datasets") # set this to your own datasets path
+    DATASETS_PATH = os.environ["SCRATCH"]
 except KeyError:
     DATASETS_PATH = "datasets"
     os.makedirs(DATASETS_PATH, exist_ok=True)
@@ -32,3 +33,8 @@ IMAGENET_SIZE = (224, 224)
 
 AG_NEWS_PATH = os.path.join(DATASETS_PATH, "ag_news")
 SST_PATH = os.path.join(DATASETS_PATH, "sst")
+
+MNIST_PATH = os.path.join(DATASETS_PATH, "mnist")
+MNIST_MEANS = np.array([0.1307])
+MNIST_STDS = np.array([0.3081])
+MNIST_NUM_CLASSES = 10

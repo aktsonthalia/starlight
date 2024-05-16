@@ -1,15 +1,18 @@
 import sys
+from functools import partial   
 
 import torchvision
 from torch.optim import AdamW, Adam, SGD
 
 from .densenet import densenet_cifar as densenet_cifar
+from .mlp import MLP
 from .resnet_cifar_std import ResNet18 as resnet18_cifar
 from .vgg import vgg11, vgg19
-from .wide_resnet import Wide_ResNet
 from .text_classifier import SimpleTextClassifier, TextCNN
+from .wide_resnet import Wide_ResNet
 
 models_dict = {
+    "mlp_mnist": partial(MLP, input_dim=784),
     "resnet18_cifar": resnet18_cifar,
     "resnet18_torch": torchvision.models.resnet18,
     "resnet50_torch": torchvision.models.resnet50,
