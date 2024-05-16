@@ -439,3 +439,25 @@
     - https://wandb.ai/mode-connect/star-domain/runs/elaq5swc
   stars:
     - https://wandb.ai/mode-connect/star-domain/runs/2ctnmyao
+- dataset: cifar10
+  model: resnet18
+  setting: adam
+  held_out:
+    - https://wandb.ai/mode-connect/star-domain/runs/yrpionrk
+    - https://wandb.ai/mode-connect/star-domain/runs/150kco0f
+    - https://wandb.ai/mode-connect/star-domain/runs/qj372sza
+    - https://wandb.ai/mode-connect/star-domain/runs/286uyunm
+    - https://wandb.ai/mode-connect/star-domain/runs/dpldr57i
+  anchors:
+    - https://wandb.ai/mode-connect/star-domain/runs/e74ikrad
+    - https://wandb.ai/mode-connect/star-domain/runs/f4gqwgu3
+    - https://wandb.ai/mode-connect/star-domain/runs/dashmlrw
+    - https://wandb.ai/mode-connect/star-domain/runs/1vtsvdrz
+    - https://wandb.ai/mode-connect/star-domain/runs/lyhkry70
+    - https://wandb.ai/mode-connect/star-domain/runs/k9bggnze
+    - https://wandb.ai/mode-connect/star-domain/runs/u2vs65a7
+    - https://wandb.ai/mode-connect/star-domain/runs/gupcz4z6
+    - https://wandb.ai/mode-connect/star-domain/runs/ztwjd5x4
+    - https://wandb.ai/mode-connect/star-domain/runs/rkqdufgk
+  stars:
+    - https://wandb.ai/mode-connect/star-domain/runs/8slqy2lg
