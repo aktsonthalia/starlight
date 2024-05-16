@@ -47,7 +47,8 @@ result = {
     "dataset": args.dataset,
     "setting": args.setting,
     "star_held_out": [],
-    "anchor_held_out": []
+    "anchor_held_out": [],
+    "star_anchor": []
 }
 
 # get config
