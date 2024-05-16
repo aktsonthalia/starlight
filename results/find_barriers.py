@@ -59,7 +59,8 @@ config = DotMap(run.config)
 # setup dataset
 config.dataset.settings.horizontal_flip = False
 train_dl, val_dl, test_dl = datasets_dict[config.dataset.name](
-    **config.dataset.settings
+    batch_size=config.dataset.settings.batch_size,
+    normalize=config.dataset.settings.normalize,
 )
 
 # setup model pairs
