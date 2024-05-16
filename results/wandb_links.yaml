@@ -409,3 +409,33 @@
     - https://wandb.ai/mode-connect/star-domain/runs/yvi97vmj
     - https://wandb.ai/mode-connect/star-domain/runs/lgd1aief
     - https://wandb.ai/mode-connect/star-domain/runs/rylbd95p
+- dataset: cifar10
+  model: vgg11
+  setting: sgd
+  held_out:
+    - https://wandb.ai/mode-connect/star-domain/runs/xt1fokcv
+    - https://wandb.ai/mode-connect/star-domain/runs/3cvr9moy
+    - https://wandb.ai/mode-connect/star-domain/runs/b0xqcc97
+  anchors:
+    - https://wandb.ai/mode-connect/star-domain/runs/2ihj5vqx
+    - https://wandb.ai/mode-connect/star-domain/runs/awukxq7z
+    - https://wandb.ai/mode-connect/star-domain/runs/6jjiplx6
+    - https://wandb.ai/mode-connect/star-domain/runs/ag4qvrse
+    - https://wandb.ai/mode-connect/star-domain/runs/w20nt6xz
+  stars:
+    - https://wandb.ai/mode-connect/star-domain/runs/cxi0gvhu
+- dataset: cifar10
+  model: vgg19
+  setting: sgd
+  held_out:
+    - https://wandb.ai/mode-connect/star-domain/runs/gcnh9h44
+    - https://wandb.ai/mode-connect/star-domain/runs/46nd89ml
+    - https://wandb.ai/mode-connect/star-domain/runs/zwq5tav1
+  anchors:
+    - https://wandb.ai/mode-connect/star-domain/runs/yuk9nd37
+    - https://wandb.ai/mode-connect/star-domain/runs/oe0xr051
+    - https://wandb.ai/mode-connect/star-domain/runs/4lpgv7d2
+    - https://wandb.ai/mode-connect/star-domain/runs/xn82z8ti
+    - https://wandb.ai/mode-connect/star-domain/runs/elaq5swc
+  stars:
+    - https://wandb.ai/mode-connect/star-domain/runs/2ctnmyao
