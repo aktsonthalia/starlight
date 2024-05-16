@@ -67,7 +67,8 @@ train_dl, val_dl, test_dl = datasets_dict[config.dataset.name](
 
 model_id_pairs = {
     "star_held_out": [],
-    "anchor_held_out": []
+    "anchor_held_out": [],
+    "star_anchor": []
 }
 
 # reduce number of held-outs and anchors to 3 each 
