@@ -50,7 +50,8 @@ result = {
     "dataset": args.dataset,
     "setting": args.setting,
     "star_held_out": [],
-    "anchor_held_out": []
+    "anchor_held_out": [],
+    "star_anchor": []
 }
 
 # get config
@@ -81,8 +82,6 @@ try:
 except:
     pass
 
-with open(output_file, 'w') as f:
-    yaml.dump(result, f)
 
 for held_out_link in links_to_use['held_out']:
     held_out_id = held_out_link.split('/')[-1]
