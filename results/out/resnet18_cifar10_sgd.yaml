@@ -1,0 +1,6 @@
+anchor_held_out: []
+dataset: cifar10
+model: resnet18
+setting: sgd
+star_anchor: []
+star_held_out: []
