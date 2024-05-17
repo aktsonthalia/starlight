@@ -20,4 +20,5 @@ results/figures/*
 
 # output files
 experiments/*
+results/out/*.out
 
