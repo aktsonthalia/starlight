@@ -78,6 +78,10 @@ model_id_pairs = {
 
 try:
     links_to_use['held_out'] = random.sample(links_to_use['held_out'], NUM_SAMPLES)
+except: 
+    pass
+
+try:
     links_to_use['anchors'] = random.sample(links_to_use['anchors'], NUM_SAMPLES)
 except:
     pass
