@@ -1,8 +1,13 @@
 from statistics import mean, stdev
 import yaml 
 import matplotlib.pyplot as plt
+import numpy as np
+from sklearn.linear_model import LinearRegression
+
+ANNOTATION_OFFSET = -3*1e-3
 
 widths = [4, 8, 16, 32, 64, 128, 256]
+
 
 regular_barrier_means = []
 regular_barrier_stdevs = []
@@ -28,12 +33,51 @@ print(regular_barrier_stdevs)
 print(star_barrier_means)
 print(star_barrier_stdevs)
 
-# plot these barriers wrt width on x axis
+# plot star barrier vs regular barrier
+# use grid lines
 
+# scatter plot between regular and star barrier means, each point should be labeled with the width
+plt.scatter(
+    regular_barrier_means, 
+    star_barrier_means,
+    marker='o',
+    label='Empirical barriers',
+)
 
-plt.errorbar(widths, regular_barrier_means, yerr=regular_barrier_stdevs, label='regular-regular', marker='o')
-plt.errorbar(widths, star_barrier_means, yerr=star_barrier_stdevs, label='star-regular', marker='o')
-plt.xlabel('Width')
-plt.ylabel('Train Loss Barrier')    
-plt.legend()  
-plt.savefig('results/figures/mlp_barriers_vs_width.png')    
+plt.xlim(-0.01, 0.36)
+plt.ylim(-0.01, 0.36)
+
+plt.grid(True)
+
+for i, txt in enumerate(widths):
+    plt.annotate(
+        txt, 
+        (regular_barrier_means[i]+ANNOTATION_OFFSET, star_barrier_means[i]), 
+        fontsize=8
+)
+    
+# fit a linear regression line and plot it
+
+X = np.array(regular_barrier_means).reshape(-1, 1)
+y = np.array(star_barrier_means)
+reg = LinearRegression().fit(X, y)
+X_plot = np.linspace(-0.01, 0.36, 100).reshape(-1, 1)
+plt.plot(
+    X_plot, 
+    reg.predict(X_plot), 
+    color='red',
+    label='Fitted line'
+)
+
+# also annotate the line with the equation
+plt.annotate(
+    f"y = {reg.coef_[0]:.2f}x + {reg.intercept_:.2f}", 
+    (0.1, 0.1), 
+    fontsize=8,
+)
+
+plt.xlabel('regular-regular loss barrier')
+plt.ylabel('star-regular loss barrier')
+
+plt.legend()
+plt.savefig('results/figures/mnist_mlp_star_vs_regular_barrier.svg')
