@@ -25,6 +25,10 @@ INTERPOLATION_NUM_POINTS = 11
 NUM_SAMPLES = 5
 SEED = 42
 
+SPECIAL_STAR_MODELS = {
+    'resnet18_cifar10_sgd': 'by2vpp9d'
+}
+
 random.seed(SEED)
 parser = argparse.ArgumentParser()
 parser.add_argument('--dataset', type=str, required=True, help="dataset")
@@ -34,6 +38,7 @@ parser.add_argument('--output_dir', type=str, required=True, help="output file")
 parser.add_argument('--setting', type=str, required=True, help="setting")
 args = parser.parse_args()
 
+config_name = f"{args.model}_{args.dataset}_{args.setting}"
 with open(args.input_file, 'r') as f:
     all_links = yaml.safe_load(f)
 
@@ -61,10 +66,11 @@ run = api.run(f"{ENTITY}/{PROJECT}/{links_to_use['held_out'][0]}")
 config = DotMap(run.config)
 
 # setup dataset
-config.dataset.settings.horizontal_flip = False
-train_dl, val_dl, test_dl = datasets_dict[config.dataset.name](
+train_dl_with_aug, val_dl, test_dl = datasets_dict[config.dataset.name](
     **config.dataset.settings
 )
+
+train_dl_without_aug, _, _ = datasets_dict[config.dataset.name](batch_size=500)
 
 # setup model pairs
 
@@ -90,6 +96,9 @@ except:
 for held_out_link in links_to_use['held_out']:
     held_out_id = held_out_link.split('/')[-1]
     for star_link in links_to_use['stars']:
+        if config_name in SPECIAL_STAR_MODELS.keys():
+            if star_link.split('/')[-1] != SPECIAL_STAR_MODELS[config_name]:
+                continue
         star_id = star_link.split('/')[-1]
         model_id_pairs["star_held_out"].append((star_id, held_out_id))
     for anchor_link in links_to_use['anchors']:
@@ -99,6 +108,9 @@ for held_out_link in links_to_use['held_out']:
 for anchor_link in links_to_use['anchors']:
     anchor_id = anchor_link.split('/')[-1]
     for star_link in links_to_use['stars']:
+        if config_name in SPECIAL_STAR_MODELS.keys():
+            if star_link.split('/')[-1] != SPECIAL_STAR_MODELS[config_name]:
+                continue
         star_id = star_link.split('/')[-1]
         model_id_pairs["star_anchor"].append((star_id, anchor_id))
 
@@ -122,7 +134,7 @@ for model_pair_type, model_pairs in model_id_pairs.items():
         model2 = match_weights(
             model1, 
             model2, 
-            train_dl, 
+            train_dl_with_aug, 
             recalculate_batch_statistics=True
         )
 
@@ -133,7 +145,8 @@ for model_pair_type, model_pairs in model_id_pairs.items():
             num_points=INTERPOLATION_NUM_POINTS,
             logger=None,
             plot_title=f"Interpolation between {model1_id} and {model2_id}",
-            train_dl=train_dl,
+            train_dl=train_dl_without_aug,
+            dl_to_calculate_batch_stats=train_dl_with_aug,
             test_dl=test_dl,
             verbose=True,
         )

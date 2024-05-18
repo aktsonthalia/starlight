@@ -544,6 +544,7 @@ def make_interpolation_plot(
     model2, 
     train_dl,
     test_dl, 
+    dl_to_calculate_batch_stats,
     num_points, 
     logger=None, 
     plot_title="default title", 
@@ -566,6 +567,9 @@ def make_interpolation_plot(
     model1_test_loss, model1_test_acc = dataset_loss_and_accuracy(model1, test_dl, loss_fn)
     model2_test_loss, model2_test_acc = dataset_loss_and_accuracy(model2, test_dl, loss_fn)
     
+    print(f"model1_train_loss: {model1_train_loss}, model1_train_acc: {model1_train_acc}")
+    print(f"model2_train_loss: {model2_train_loss}, model2_train_acc: {model2_train_acc}")
+    
     ts = torch.linspace(0, 1, num_points)
     train_losses = [round(model1_train_loss, 3)]
     train_accuracies = [round(model1_train_acc*100, 3)]
@@ -586,7 +590,7 @@ def make_interpolation_plot(
         if bn and t > 0 and t < 1:
             # recalculate batch statistics
             interpolated_model.train()
-            for i, batch in enumerate(train_dl):
+            for i, batch in enumerate(dl_to_calculate_batch_stats):
                 x, y = batch
                 x = x.cuda()
                 y = y.cuda()
