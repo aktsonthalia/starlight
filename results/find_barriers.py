@@ -13,7 +13,7 @@ import wandb
 from dotmap import DotMap
 from utils import (
     setup_model, 
-    make_interpolation_plot, 
+    make_interpolation_plot,
     load_model_from_wandb_id,
     match_weights
 )
@@ -22,12 +22,16 @@ from dataloaders import datasets_dict
 ENTITY = "mode-connect"
 PROJECT = "star-domain"
 INTERPOLATION_NUM_POINTS = 11
-NUM_SAMPLES = 5
+HELD_OUT_NUM_SAMPLES = 5
+ANCHOR_NUM_SAMPLES = 5
 SEED = 42
 
 SPECIAL_STAR_MODELS = {
-    'resnet18_cifar10_sgd': 'by2vpp9d'
+    'resnet18_cifar10_sgd': 'by2vpp9d',
+    'resnet18_cifar100_sgd': 'rylbd95p',
 }
+
+
 
 random.seed(SEED)
 parser = argparse.ArgumentParser()
@@ -39,6 +43,15 @@ parser.add_argument('--setting', type=str, required=True, help="setting")
 args = parser.parse_args()
 
 config_name = f"{args.model}_{args.dataset}_{args.setting}"
+
+# special cases go here
+if config_name == 'resnet18_cifar10_warmup_mixed':
+    HELD_OUT_NUM_SAMPLES = 6
+    ANCHOR_NUM_SAMPLES = 10
+
+# end of special cases
+
+
 with open(args.input_file, 'r') as f:
     all_links = yaml.safe_load(f)
 
@@ -83,12 +96,12 @@ model_id_pairs = {
 # reduce number of held-outs and anchors to SAMPLES
 
 try:
-    links_to_use['held_out'] = random.sample(links_to_use['held_out'], NUM_SAMPLES)
+    links_to_use['held_out'] = random.sample(links_to_use['held_out'], HELD_OUT_NUM_SAMPLES)
 except: 
     pass
 
 try:
-    links_to_use['anchors'] = random.sample(links_to_use['anchors'], NUM_SAMPLES)
+    links_to_use['anchors'] = random.sample(links_to_use['anchors'], ANCHOR_NUM_SAMPLES)
 except:
     pass
 
@@ -96,9 +109,9 @@ except:
 for held_out_link in links_to_use['held_out']:
     held_out_id = held_out_link.split('/')[-1]
     for star_link in links_to_use['stars']:
-        if config_name in SPECIAL_STAR_MODELS.keys():
-            if star_link.split('/')[-1] != SPECIAL_STAR_MODELS[config_name]:
-                continue
+        # if config_name in SPECIAL_STAR_MODELS.keys():
+        #     if star_link.split('/')[-1] != SPECIAL_STAR_MODELS[config_name]:
+        #         continue
         star_id = star_link.split('/')[-1]
         model_id_pairs["star_held_out"].append((star_id, held_out_id))
     for anchor_link in links_to_use['anchors']:
@@ -113,6 +126,10 @@ for anchor_link in links_to_use['anchors']:
                 continue
         star_id = star_link.split('/')[-1]
         model_id_pairs["star_anchor"].append((star_id, anchor_id))
+
+print(f"Number of star_held_out pairs: {len(model_id_pairs['star_held_out'])}")
+print(f"Number of anchor_held_out pairs: {len(model_id_pairs['anchor_held_out'])}")
+print(f"Number of star_anchor pairs: {len(model_id_pairs['star_anchor'])}")
 
 for model_pair_type, model_pairs in model_id_pairs.items():
 

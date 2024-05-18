@@ -26,7 +26,7 @@ from .constants import *
 IMAGENET_MEANS_SCALED = IMAGENET_MEANS * 255
 IMAGENET_STDS_SCALED = IMAGENET_STDS * 255
 
-def load_imagenet1k(batch_size, num_workers, img_size=224, rand_aug_magnitude=10, rand_aug_num_ops=2):
+def load_imagenet1k(batch_size, num_workers, img_size=224):
     
     image_pipeline_train = [
         RandomResizedCropRGBImageDecoder((img_size, img_size)),
@@ -34,8 +34,6 @@ def load_imagenet1k(batch_size, num_workers, img_size=224, rand_aug_magnitude=10
         ToTensor(),         
         ToDevice(torch.device("cuda"), non_blocking=True),
         ToTorchImage(),
-        # RandAugment(magnitude=rand_aug_magnitude, num_ops=rand_aug_num_ops),
-        # ConvertImageDtype(torch.float32),
         NormalizeImage(IMAGENET_MEANS_SCALED, IMAGENET_STDS_SCALED, np.float32),
     ]
     label_pipeline_train = [
