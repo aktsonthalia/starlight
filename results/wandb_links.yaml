@@ -462,7 +462,7 @@
   stars:
     - https://wandb.ai/mode-connect/star-domain/runs/8slqy2lg
 - dataset: cifar10
-  model: densenet121
+  model: densenet_40_12
   setting: sgd
   held_out:
     - https://wandb.ai/mode-connect/star-domain/runs/3lmtdfnn
@@ -524,7 +524,7 @@
   stars:
     - https://wandb.ai/mode-connect/star-domain/runs/45hygnla
 - dataset: cifar100
-  model: densenet121
+  model: densenet_40_12
   setting: sgd
   held_out:
     - https://wandb.ai/mode-connect/star-domain/runs/6y7w5d40
@@ -608,3 +608,131 @@
     - https://wandb.ai/mode-connect/star-domain/runs/zmf3uxy5
   stars:
      - https://wandb.ai/mode-connect/star-domain/runs/p8d83pg0
+- dataset: imagenet1k
+  model: resnet18_torch
+  setting: sgd
+  held_out:
+    - https://wandb.ai/mode-connect/star-domain/runs/qx4ilyqv
+    - https://wandb.ai/mode-connect/star-domain/runs/4tjduoxm
+    - https://wandb.ai/mode-connect/star-domain/runs/umwiwf0x
+  anchors:
+    - https://wandb.ai/mode-connect/star-domain/runs/x5iqyley
+    - https://wandb.ai/mode-connect/star-domain/runs/zfe4vtm9
+    - https://wandb.ai/mode-connect/star-domain/runs/8ckquh1p
+    - https://wandb.ai/mode-connect/star-domain/runs/iaegxwiq
+    - https://wandb.ai/mode-connect/star-domain/runs/j7jww8j3
+    - https://wandb.ai/mode-connect/star-domain/runs/hu88rlpg
+    - https://wandb.ai/mode-connect/star-domain/runs/qzwi65jc
+    - https://wandb.ai/mode-connect/star-domain/runs/2x5c8jio
+    - https://wandb.ai/mode-connect/star-domain/runs/8kos475t
+    - https://wandb.ai/mode-connect/star-domain/runs/p56j5nku
+    - https://wandb.ai/mode-connect/star-domain/runs/lpyin5nz
+    - https://wandb.ai/mode-connect/star-domain/runs/awk337fu
+    - https://wandb.ai/mode-connect/star-domain/runs/h0jkcge4
+    - https://wandb.ai/mode-connect/star-domain/runs/pvft301y
+    - https://wandb.ai/mode-connect/star-domain/runs/55ox6908
+    - https://wandb.ai/mode-connect/star-domain/runs/flviouhy
+    - https://wandb.ai/mode-connect/star-domain/runs/k876r6zt
+    - https://wandb.ai/mode-connect/star-domain/runs/0shz9uvv
+    - https://wandb.ai/mode-connect/star-domain/runs/uynx9kwm
+    - https://wandb.ai/mode-connect/star-domain/runs/624q43dr
+    - https://wandb.ai/mode-connect/star-domain/runs/30ygwmzw
+    - https://wandb.ai/mode-connect/star-domain/runs/is6t3pc4
+    - https://wandb.ai/mode-connect/star-domain/runs/gxws8gbd
+    - https://wandb.ai/mode-connect/star-domain/runs/whe1wxcj
+    - https://wandb.ai/mode-connect/star-domain/runs/vh074srh
+    - https://wandb.ai/mode-connect/star-domain/runs/cxmsjbfk
+    - https://wandb.ai/mode-connect/star-domain/runs/3gai2qs3
+    - https://wandb.ai/mode-connect/star-domain/runs/c4dlza3q
+    - https://wandb.ai/mode-connect/star-domain/runs/qb8y79cv
+    - https://wandb.ai/mode-connect/star-domain/runs/q1r5glph
+  stars:
+    - https://wandb.ai/mode-connect/star-domain/runs/us8qo2gx
+- dataset: ag_news
+  model: simple_text_classifier
+  setting: sgd
+  held_out:
+    - https://wandb.ai/mode-connect/star-domain/runs/2cte2jzt
+    - https://wandb.ai/mode-connect/star-domain/runs/1qdrrqeu
+    - https://wandb.ai/mode-connect/star-domain/runs/cpcuuzzh
+    - https://wandb.ai/mode-connect/star-domain/runs/p6w4fh2t
+    - https://wandb.ai/mode-connect/star-domain/runs/27xy5s72
+  anchors:
+    - https://wandb.ai/mode-connect/star-domain/runs/q0g3wxn2
+    - https://wandb.ai/mode-connect/star-domain/runs/x12d90bw
+    - https://wandb.ai/mode-connect/star-domain/runs/mwn4pnfg
+    - https://wandb.ai/mode-connect/star-domain/runs/cscdkk6l
+    - https://wandb.ai/mode-connect/star-domain/runs/4z8uuveb
+    - https://wandb.ai/mode-connect/star-domain/runs/n4wa35c9
+    - https://wandb.ai/mode-connect/star-domain/runs/le74uun8
+    - https://wandb.ai/mode-connect/star-domain/runs/ca2sys8x
+    - https://wandb.ai/mode-connect/star-domain/runs/usdtckck
+    - https://wandb.ai/mode-connect/star-domain/runs/29o1faqc
+    - https://wandb.ai/mode-connect/star-domain/runs/60o7yh3h
+    - https://wandb.ai/mode-connect/star-domain/runs/a2nzzbbc
+    - https://wandb.ai/mode-connect/star-domain/runs/fev5r7l2
+    - https://wandb.ai/mode-connect/star-domain/runs/1bz71vot
+    - https://wandb.ai/mode-connect/star-domain/runs/zqnhtatk
+    - https://wandb.ai/mode-connect/star-domain/runs/vab2h149
+    - https://wandb.ai/mode-connect/star-domain/runs/d3n98fty
+    - https://wandb.ai/mode-connect/star-domain/runs/umxhxk95
+    - https://wandb.ai/mode-connect/star-domain/runs/laeaohkp
+    - https://wandb.ai/mode-connect/star-domain/runs/dc7ueiuz
+  stars:
+    - https://wandb.ai/mode-connect/star-domain/runs/xfxu93fu
+- dataset: cifar10
+  model: resnet18
+  setting: sgd_unif_sampling
+  held_out:
+    - https://wandb.ai/mode-connect/star-domain/runs/vecgrxkl
+    - https://wandb.ai/mode-connect/star-domain/runs/soba3yez
+    - https://wandb.ai/mode-connect/star-domain/runs/t25mz93m
+    - https://wandb.ai/mode-connect/star-domain/runs/5bluce0j
+    - https://wandb.ai/mode-connect/star-domain/runs/j53z28km
+  stars:
+    - https://wandb.ai/mode-connect/star-domain/runs/5uam1yve
+    - https://wandb.ai/mode-connect/star-domain/runs/rq53zoun
+    - https://wandb.ai/mode-connect/star-domain/runs/u46duaac
+  anchors: []
+- dataset: cifar10
+  model: resnet18
+  setting: sgd_beta_sampling
+  held_out:
+    - https://wandb.ai/mode-connect/star-domain/runs/vecgrxkl
+    - https://wandb.ai/mode-connect/star-domain/runs/soba3yez
+    - https://wandb.ai/mode-connect/star-domain/runs/t25mz93m
+    - https://wandb.ai/mode-connect/star-domain/runs/5bluce0j
+    - https://wandb.ai/mode-connect/star-domain/runs/j53z28km
+  stars:
+    - https://wandb.ai/mode-connect/star-domain/runs/5uam1yve
+    - https://wandb.ai/mode-connect/star-domain/runs/rq53zoun
+    - https://wandb.ai/mode-connect/star-domain/runs/u46duaac
+  anchors: []
+- dataset: cifar10
+  model: resnet18
+  setting: sgd_uniform_sampling
+  held_out:
+    - https://wandb.ai/mode-connect/star-domain/runs/vecgrxkl
+    - https://wandb.ai/mode-connect/star-domain/runs/soba3yez
+    - https://wandb.ai/mode-connect/star-domain/runs/t25mz93m
+    - https://wandb.ai/mode-connect/star-domain/runs/5bluce0j
+    - https://wandb.ai/mode-connect/star-domain/runs/j53z28km
+  stars:
+    - https://wandb.ai/mode-connect/star-domain/runs/b2i0rqhd
+    - https://wandb.ai/mode-connect/star-domain/runs/q69rwx6x
+    - https://wandb.ai/mode-connect/star-domain/runs/f8et41u2
+  anchors: []
+- dataset: cifar10
+  model: resnet18
+  setting: sgd_constant_sampling
+  held_out:
+    - https://wandb.ai/mode-connect/star-domain/runs/vecgrxkl
+    - https://wandb.ai/mode-connect/star-domain/runs/soba3yez
+    - https://wandb.ai/mode-connect/star-domain/runs/t25mz93m
+    - https://wandb.ai/mode-connect/star-domain/runs/5bluce0j
+    - https://wandb.ai/mode-connect/star-domain/runs/j53z28km
+  stars:
+    - https://wandb.ai/mode-connect/star-domain/runs/y81hu4g8
+    - https://wandb.ai/mode-connect/star-domain/runs/z72fgs5v
+    - https://wandb.ai/mode-connect/star-domain/runs/u0t8e68c
+  anchors: []

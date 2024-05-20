@@ -1,3 +1,4 @@
+print("Importing libraries")
 import sys
 sys.path.append("..")   
 
@@ -19,6 +20,8 @@ from utils import (
 )
 from dataloaders import datasets_dict
 
+print("Imports successful")
+
 ENTITY = "mode-connect"
 PROJECT = "star-domain"
 INTERPOLATION_NUM_POINTS = 11
@@ -30,8 +33,6 @@ SPECIAL_STAR_MODELS = {
     'resnet18_cifar10_sgd': 'by2vpp9d',
     'resnet18_cifar100_sgd': 'rylbd95p',
 }
-
-
 
 random.seed(SEED)
 parser = argparse.ArgumentParser()
@@ -48,6 +49,10 @@ config_name = f"{args.model}_{args.dataset}_{args.setting}"
 if config_name == 'resnet18_cifar10_warmup_mixed':
     HELD_OUT_NUM_SAMPLES = 6
     ANCHOR_NUM_SAMPLES = 10
+
+if 'imagenet' in config_name:
+    HELD_OUT_NUM_SAMPLES = 1
+    ANCHOR_NUM_SAMPLES = 1
 
 # end of special cases
 
@@ -83,7 +88,15 @@ train_dl_with_aug, val_dl, test_dl = datasets_dict[config.dataset.name](
     **config.dataset.settings
 )
 
-train_dl_without_aug, _, _ = datasets_dict[config.dataset.name](batch_size=500)
+if 'imagenet' in config_name:
+    train_dl_without_aug, _, _ = datasets_dict[config.dataset.name](
+        batch_size=500,
+        use_augmentation=False,
+    )
+else:
+    train_dl_without_aug, _, _ = datasets_dict[config.dataset.name](
+        batch_size=500,
+    )
 
 # setup model pairs
 
