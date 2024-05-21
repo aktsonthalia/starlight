@@ -54,6 +54,10 @@ if 'imagenet' in config_name:
     HELD_OUT_NUM_SAMPLES = 1
     ANCHOR_NUM_SAMPLES = 1
 
+if 'many_heldouts' in config_name:
+    HELD_OUT_NUM_SAMPLES = 15
+    ANCHOR_NUM_SAMPLES = 15
+
 # end of special cases
 
 

@@ -50,9 +50,11 @@ print(f'Number of star_held_out: {len(star_held_out)}')
 print(f'Number of anchor_held_out: {len(anchor_held_out)}')
 print(f'Number of star_anchor: {len(star_anchor)}')
 
-for model_pair_type in model_pair_types:
+for model_pair_type, tmp_result in zip(
+    model_pair_types,
+    [star_held_out, anchor_held_out, star_anchor]
+):
     print(f'Model pair type: {model_pair_type}')
-    tmp_result = results[model_pair_type]
     train_loss_barriers = [item['train_loss_barrier'] for item in tmp_result]
 
     if len(train_loss_barriers) == 0:
@@ -260,16 +262,23 @@ if plot_barriers_vs_num_anchors:
         color=COLORS['regular'],
         label='regular-regular',
     )
-    plt.axhline(
-        y=mean(regular_train_loss_barriers) + stdev(regular_train_loss_barriers),
+    plt.fill_between(
+        [0, max(num_anchors_list)],
+        [mean(regular_train_loss_barriers) - stdev(regular_train_loss_barriers)],
+        [mean(regular_train_loss_barriers) + stdev(regular_train_loss_barriers)],
         color=COLORS['regular'],
-        linestyle='--',
+        alpha=0.5,
     )
-    plt.axhline(
-        y=mean(regular_train_loss_barriers) - stdev(regular_train_loss_barriers),
-        color=COLORS['regular'],
-        linestyle='--',
-    )
+    # plt.axhline(
+    #     y=mean(regular_train_loss_barriers) + stdev(regular_train_loss_barriers),
+    #     color=COLORS['regular'],
+    #     linestyle='--',
+    # )
+    # plt.axhline(
+    #     y=mean(regular_train_loss_barriers) - stdev(regular_train_loss_barriers),
+    #     color=COLORS['regular'],
+    #     linestyle='--',
+    # )
     
     plt.xlabel('Number of source models')
     plt.ylabel('Train loss barrier')
