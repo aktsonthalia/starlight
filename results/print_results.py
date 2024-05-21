@@ -50,35 +50,51 @@ print(f'Number of star_held_out: {len(star_held_out)}')
 print(f'Number of anchor_held_out: {len(anchor_held_out)}')
 print(f'Number of star_anchor: {len(star_anchor)}')
 
+print("=====================================")
 for model_pair_type, tmp_result in zip(
     model_pair_types,
     [star_held_out, anchor_held_out, star_anchor]
 ):
     print(f'Model pair type: {model_pair_type}')
     train_loss_barriers = [item['train_loss_barrier'] for item in tmp_result]
+    test_loss_barriers = [item['test_loss_barrier'] for item in tmp_result]
 
     if len(train_loss_barriers) == 0:
         print(f'No train loss barriers found for {model_pair_type}')
         continue
     elif len(train_loss_barriers) == 1:
         print(f'Train loss barrier: ${train_loss_barriers[0]:.3f}$')
+        print(f'Test loss barrier: ${test_loss_barriers[0]:.3f}$')
     else:
         print(f'Train loss barrier: ${mean(train_loss_barriers):.3f} \pm {stdev(train_loss_barriers):.3f}$')
+        print(f'Min train loss barrier: ${min(train_loss_barriers):.3f}$')
+        print(f'Max train loss barrier: ${max(train_loss_barriers):.3f}$')
+        print(f'Test loss barrier: ${mean(test_loss_barriers):.3f} \pm {stdev(test_loss_barriers):.3f}$')
+        print(f'Min test loss barrier: ${min(test_loss_barriers):.3f}$')
+        print(f'Max test loss barrier: ${max(test_loss_barriers):.3f}$')
+    
+    print("=====================================")
 
 star_train_losses = [item['train_losses'][0] for item in star_held_out]
+star_test_losses = [item['test_losses'][0] for item in star_held_out]
 regular_train_losses = [item['train_losses'][0] for item in anchor_held_out]
+regular_test_losses = [item['test_losses'][0] for item in anchor_held_out]
 
 if len(star_train_losses) == 1:
     print(f'Star train loss: ${star_train_losses[0]:.3f}$')
+    print(f'Star test loss: ${star_test_losses[0]:.3f}$')
 else:
     print(f'Star train loss: ${mean(star_train_losses):.3f} \pm {stdev(star_train_losses):.3f}$')
+    print(f'Star test loss: ${mean(star_test_losses):.3f} \pm {stdev(star_test_losses):.3f}$')
 
 if len(regular_train_losses) == 0:
     print(f'No regular train losses found')
 elif len(regular_train_losses) == 1:
     print(f'Regular train loss: ${regular_train_losses[0]:.3f}$')
+    print(f'Regular test loss: ${regular_test_losses[0]:.3f}$')
 else:
     print(f'Regular train loss: ${mean(regular_train_losses):.3f} \pm {stdev(regular_train_losses):.3f}$')
+    print(f'Regular test loss: ${mean(regular_test_losses):.3f} \pm {stdev(regular_test_losses):.3f}$')
 
 
 def make_plot(
