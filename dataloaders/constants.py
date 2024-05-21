@@ -2,9 +2,9 @@ import numpy as np
 import os 
 
 try:
-    # DATASETS_PATH = os.path.join(os.environ["WORK"], "datasets") # set this to your own datasets path
-    DATASETS_PATH = os.environ["SCRATCH"]
-except KeyError:
+    DATASETS_PATH = "/mnt/lustre/work/bethge/asonthalia61/datasets" # set this to your own datasets path
+    # DATASETS_PATH = os.environ["SCRATCH"]
+except KeyError:\
     DATASETS_PATH = "datasets"
     os.makedirs(DATASETS_PATH, exist_ok=True)
     
@@ -20,7 +20,9 @@ CIFAR100_NUM_CLASSES = 100
 CIFAR10_PATH = os.path.join(DATASETS_PATH, "cifar10")
 CIFAR100_PATH = os.path.join(DATASETS_PATH, "cifar100")
 
-IMAGENET_PATH = "/mnt/qb/datasets/ImageNet-ffcv"
+IMAGENET_PATH = "/home/scratch_local/datasets/ImageNet2012/"
+IMAGENET_TRAIN_DIR = "train"
+IMAGENET_VAL_DIR = "val"
 IMAGENET_TRAIN_FFCV = "train_500_0.50_90.ffcv"
 IMAGENET_VAL_FFCV = "val_500_0.50_90.ffcv"
 
