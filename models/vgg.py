@@ -181,9 +181,23 @@ def vgg11(num_classes):
         out_features=num_classes,
     )
 
+def vgg11_bn(num_classes):
+    
+    return VGG(
+        vgg_name="VGG11bn",
+        out_features=num_classes,
+    )
+
 def vgg19(num_classes):
 
     return VGG(
         vgg_name="VGG19",
+        out_features=num_classes,
+    )
+
+def vgg19_bn(num_classes):
+
+    return VGG(
+        vgg_name="VGG19bn",
         out_features=num_classes,
     )

@@ -4,7 +4,7 @@ import os
 try:
     DATASETS_PATH = "/mnt/lustre/work/bethge/asonthalia61/datasets" # set this to your own datasets path
     # DATASETS_PATH = os.environ["SCRATCH"]
-except KeyError:\
+except KeyError:
     DATASETS_PATH = "datasets"
     os.makedirs(DATASETS_PATH, exist_ok=True)
     

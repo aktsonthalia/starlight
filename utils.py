@@ -10,14 +10,17 @@ import torch.nn.functional as F
 import unittest
 import wandb
 
+from copy import deepcopy
 from torch import nn
 
 from rebasin import PermutationCoordinateDescent
 
 import sys
-sys.path.append("sinkhorn-rebasin")
-# from sinkhorn_rebasin.rebasinnet import RebasinNet
-# from sinkhorn_rebasin.loss import DistL1Loss
+sys.path.append(os.path.join(
+    os.environ["STARLIGHT_DIR"], "sinkhorn-rebasin"
+))
+from sinkhorn_rebasin.rebasinnet import RebasinNet
+from sinkhorn_rebasin.loss import DistL2Loss
 
 
 from models import models_dict
@@ -282,12 +285,15 @@ def match_weights(
     if  matching_scheme == "sinkhorn":
 
         model1.cuda()
-        model2 = RebasinNet(model2, input_shape=next(iter(train_dl))[0].shape)
+        model2 = RebasinNet(
+            copy.deepcopy(model2), 
+            input_shape=next(iter(train_dl))[0].shape
+        )
         model2.cuda()
         model2.identity_init()
         model2.train()
 
-        criterion = DistL1Loss(model1)
+        criterion = DistL2Loss(model1)
         optimizer = torch.optim.AdamW(model2.p.parameters(), lr=10.0)
 
         for _ in range(50):
@@ -306,8 +312,6 @@ def match_weights(
 
             if loss_validation == 0:
                 break
-
-        model2 = rebased_model
         
     # recalculate batch statistics if necessary
     if recalculate_batch_statistics and has_batch_norm(model2):
