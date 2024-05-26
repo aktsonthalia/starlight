@@ -1,18 +1,5 @@
 Source code for the paper [Do Deep Neural Network Solutions form a Star Domain?](https://arxiv.org/abs/2403.07968)
 
-If you find this work useful, please consider citing:
-
-```
-@misc{sonthalia2024deep,
-      title={Do Deep Neural Network Solutions Form a Star Domain?}, 
-      author={Ankit Sonthalia and Alexander Rubinstein and Ehsan Abbasnejad and Seong Joon Oh},
-      year={2024},
-      eprint={2403.07968},
-      archivePrefix={arXiv},
-      primaryClass={cs.LG}
-}
-```
-
 ## Instructions
 
 ### Source code :computer:
@@ -101,3 +88,18 @@ $ python plot_barriers.py -c <CONFIG_FILE from configs/> -a <PATH_TO_MODEL_A_CHE
 Feel free to open an issue, if you find a bug, or would like to see a new feature.
 
 Check [the issues](https://github.com/aktsonthalia/starlight/labels/enhancement) for planned improvements. If you wish, you may also open pull requests addressing them.
+
+## Citing
+
+If you find this work useful, please consider citing:
+
+```
+@misc{sonthalia2024deep,
+      title={Do Deep Neural Network Solutions Form a Star Domain?}, 
+      author={Ankit Sonthalia and Alexander Rubinstein and Ehsan Abbasnejad and Seong Joon Oh},
+      year={2024},
+      eprint={2403.07968},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG}
+}
+```
